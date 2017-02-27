@@ -45,10 +45,12 @@ class Data:
         # print(ultimate_dict)
 
     def fix_comma_issue(self):
-            f = open('earthquake_data.csv', 'wb+')
+            f = open('earthquake_data.csv', 'wt')
             print(len(self.lines))
+            f.write(self.lines[0])
             for i in range(len(self.lines)):
                 if i > 0:
+                    print(i)
                     my_line = list(self.lines[i])
                     for i, letter in enumerate(my_line):
                         if letter == ',':
@@ -60,6 +62,7 @@ class Data:
                                 my_line[i] = ';'
                                 print('fixing a comma')
                     self.lines[i] = ''.join(my_line)
-                    if i == 25:
-                        print(self.lines[i])
-            f.writelines(self.lines)
+                    print(self.lines[i])
+                    f.write(self.lines[i])
+            '\n'.join(self.lines)
+            # f.writelines(self.lines)
