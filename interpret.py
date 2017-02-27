@@ -13,31 +13,40 @@ class Interpret:
 		#self.answer = answer
 
 	def reverse_dictionary(self):
-		"""
+		'''
 		Makes a dictionary that, based on the answer to a question, gives the probability
 		that someone is from a location and age range
 		Basically it gives us P(D|H)
-		"""
+		'''
 		factors = {}
 		for i in self.earthquake: # in location of earthquake
 			location = self.earthquake[i]
+			new_location = {}
 			for j in location: # in age range of location
 				age = location[j]
 				for l in age: # in question of age 
 					question = age[l]
+					new_question = {}
 					a = 0
 					while a < len(question):
+						new_answer = {}
 						
-						if a > 0:
+						factors[l] = new_question
+						new_question[a] = new_answer
+						new_answer[i] = new_location
+
+						new_location[j] = self.earthquake[i][j][l][a]
+						print(new_question[a])
+						#if a > 0:
 							#current_value = factors.get(l, {}).get(a, {}).get(i, {}).get(j, {})
-							current_value = 0
-							updated_value = current_value + self.earthquake[i][j][l][a]
-						elif a == 0:
-							current_value = 0
-						factors[l] = {a : {i: {j: current_value}}} # factors.get([l][a][i][j])
+							#current_value = 0
+							#updated_value = current_value + 
+						#elif a == 0:
+							#current_value = 0
+						#factors[l] = {a : {i: {j: current_value}}} # factors.get([l][a][i][j])
 						a +=1
 
-		print(factors)
+		#print(factors)
 
 	def bayesian_update():
 		"""
@@ -47,23 +56,23 @@ class Interpret:
 
 earthquake = {'loc1' : 
 				{'age1' : 
-					{'q1' : [3,4,7,2], 
-					'q2': [4,9,3,2], 
-					'q3' : [9,2,1,0]}, 
+					{'q1' : [1,2,3,4], 
+					'q2': [5,6,7,8], 
+					'q3' : [9,10,11,12]}, 
 				'age2' : 
-					{'q1' : [3,4,7,2], 
-					'q2': [4,9,3,2], 
-					'q3' : [9,2,1,0]} 
+					{'q1' : [1,2,3,4], 
+					'q2': [5,6,7,8], 
+					'q3' : [9,10,11,12]} 
 				},
 			'loc2' : 
 				{'age1' : 
-					{'q1' : [3,4,7,2], 
-					'q2': [4,9,3,2], 
-					'q3' : [9,2,1,0]}, 
+					{'q1' : [1,2,3,4], 
+					'q2': [5,6,7,8], 
+					'q3' : [9,10,11,12]}, 
 				'age2' : 
-					{'q1' : [3,4,7,2], 
-					'q2': [4,9,3,2], 
-					'q3' : [9,2,1,0]} 
+					{'q1' : [1,2,3,4], 
+					'q2': [5,6,7,8], 
+					'q3' : [9,10,11,12]} 
 				}
 			}
 newdictionary = Interpret(earthquake)
