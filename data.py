@@ -1,6 +1,8 @@
 '''
 Authors: Vicky McDermott and Emily Lepert
 '''
+from pathlib import Path
+import pickle
 
 
 class Data:
@@ -42,6 +44,12 @@ class Data:
         return ultimate_dict
 
     def sort_answers(self):
+        my_file = Path('earthquake_dict.pickle')
+        if my_file.is_file():
+            # Load data from a file
+            input_file = open('earthquake_dict.pickle', 'rb')
+            best_dict = pickle.loads(input_file.read())
+            return best_dict
         best_dict = {}
         # Get dictionary which is sorted by location and age
         ultimate_dict = self.sort_by_age()
@@ -64,19 +72,16 @@ class Data:
                         answers[i].append(answer)
                 # After going through each person convert list to freqdict
                 # Be sure to convert list for each question to freqdict
-                    # print(answers)
                     new_ans_list = []
                     for i in range(9):
                         new_ans = self.wordListToFreqDict(answers[i])
                         # Recreate your dictionary
                         new_ans_list.append(new_ans)
-                # print(new_ans_list)
-                # print(age)
                 nested_dict[age] = new_ans_list
-                # print(nested_dict[age])
-            # print(nested_dict)
             best_dict[location] = nested_dict
-        print(best_dict)
+        f = open('earthquake_dict.pickle', 'wb')
+        pickle.dump(best_dict, f)
+        return best_dict
 
     def wordListToFreqDict(self, wordlist):
         '''Given a list of words, return a dictionary of
@@ -106,3 +111,9 @@ class Data:
                     self.lines[i] = ''.join(my_line)
                     print(self.lines[i])
                     f.write(self.lines[i])
+
+    def get_data(self, location, age, question):
+        best_dict = self.sort_answers()
+        age_dict = best_dict[location]
+        answers = age_dict[age]
+        return answers[question]
