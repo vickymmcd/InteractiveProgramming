@@ -12,17 +12,11 @@ class Interpret:
 		#self.question = question
 		#self.answer = answer
 
-	def reverse_dictionary(self):
-		'''
-		Makes a dictionary that, based on the answer to a question, gives the probability
-		that someone is from a location and age range
-		Basically it gives us P(D|H)
-		'''
+	def reverse_empty_dictionary(self):
 		factors = {}
 		# first level of earthquake: locations
 		for i in self.earthquake: 
 			location = self.earthquake[i]
-			
 			# second level: age
 			for j in location: # in age range of location
 				age = location[j]
@@ -38,13 +32,38 @@ class Interpret:
 						new_age = {}
 						new_answer = {}
 						new_question[a] = new_answer # value associated with each answer index
-						print(a)
 						new_answer[i] = new_age # value associated with each location
 						new_age[j] = self.earthquake[i][j][l][a] # value associated with each age
+						factors[l][a][i][j] = self.earthquake[i][j][l][a]
+						
 						a +=1
-					print(l)
-					print(factors)
-					print("\n")
+					#print(l)
+		return(factors)
+
+	def reverse_dictionary(self, factors):
+		'''
+		Makes a dictionary that, based on the answer to a question, gives the probability
+		that someone is from a location and age range
+		Basically it gives us P(D|H)
+		'''
+		# first level of earthquake: locations
+		for i in self.earthquake: 
+			location = self.earthquake[i]
+			
+			# second level: age
+			for j in location: # in age range of location
+				age = location[j]
+				# third level: question
+				for l in age: # in question of age 
+					question = age[l]
+					
+					a = 0
+					# 4th level: answer
+					while a < len(question):
+						factors[l][a][i][j] = self.earthquake[i][j][l][a]
+						a +=1
+		print(factors)
+					
 
 		
 
@@ -76,7 +95,9 @@ earthquake = {'loc1' :
 				}
 			}
 newdictionary = Interpret(earthquake)
-print(newdictionary.reverse_dictionary())
+reverse = newdictionary.reverse_empty_dictionary()
+print(reverse)
+#print(newdictionary.reverse_dictionary(reverse))
 
 
 
