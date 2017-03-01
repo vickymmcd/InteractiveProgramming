@@ -19,34 +19,34 @@ class Interpret:
 		Basically it gives us P(D|H)
 		'''
 		factors = {}
-		for i in self.earthquake: # in location of earthquake
+		# first level of earthquake: locations
+		for i in self.earthquake: 
 			location = self.earthquake[i]
-			new_location = {}
+			
+			# second level: age
 			for j in location: # in age range of location
 				age = location[j]
+				new_question = {}
+				# third level: question
 				for l in age: # in question of age 
 					question = age[l]
-					new_question = {}
+					
 					a = 0
+					factors[l] = new_question # value associated with q
+					# 4th level: answer
 					while a < len(question):
+						new_age = {}
 						new_answer = {}
-						
-						factors[l] = new_question
-						new_question[a] = new_answer
-						new_answer[i] = new_location
-
-						new_location[j] = self.earthquake[i][j][l][a]
-						print(new_question[a])
-						#if a > 0:
-							#current_value = factors.get(l, {}).get(a, {}).get(i, {}).get(j, {})
-							#current_value = 0
-							#updated_value = current_value + 
-						#elif a == 0:
-							#current_value = 0
-						#factors[l] = {a : {i: {j: current_value}}} # factors.get([l][a][i][j])
+						new_question[a] = new_answer # value associated with each answer index
+						print(a)
+						new_answer[i] = new_age # value associated with each location
+						new_age[j] = self.earthquake[i][j][l][a] # value associated with each age
 						a +=1
+					print(l)
+					print(factors)
+					print("\n")
 
-		#print(factors)
+		
 
 	def bayesian_update():
 		"""
@@ -60,19 +60,19 @@ earthquake = {'loc1' :
 					'q2': [5,6,7,8], 
 					'q3' : [9,10,11,12]}, 
 				'age2' : 
-					{'q1' : [1,2,3,4], 
-					'q2': [5,6,7,8], 
-					'q3' : [9,10,11,12]} 
+					{'q1' : [13,14,15,16], 
+					'q2': [17,18,19,20], 
+					'q3' : [21,22,23,24]} 
 				},
 			'loc2' : 
 				{'age1' : 
-					{'q1' : [1,2,3,4], 
-					'q2': [5,6,7,8], 
-					'q3' : [9,10,11,12]}, 
+					{'q1' : [25,26,27,28], 
+					'q2': [29,30,31,32], 
+					'q3' : [33,34,35,36]}, 
 				'age2' : 
-					{'q1' : [1,2,3,4], 
-					'q2': [5,6,7,8], 
-					'q3' : [9,10,11,12]} 
+					{'q1' : [37,38,39,40], 
+					'q2': [41,42,43,44], 
+					'q3' : [45,46,47,48]} 
 				}
 			}
 newdictionary = Interpret(earthquake)
