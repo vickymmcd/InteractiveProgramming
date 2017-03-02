@@ -22,18 +22,6 @@ class Interpret:
 		self.location_list = ['East North Central', 'East South Central', 'Middle Atlantic', 
 			'Mountain', 'New England', 'Pacific', 'South Atlantic', 'West North Central', 'West South Central']
 
-	def total_responses_with_file(self, reset=False):
-		"""
-		Tallies up the total responses of the data
-		"""
-		total = 0
-		for i in self.question_list:
-			for j in self.age_list:
-				for l in self.location_list:
-					result = self.data.get_data(l, j, i)
-					for x in result:
-						total += result[x]
-
 
 	def denominator_factor(self, question, answer):
 		"""
@@ -118,7 +106,6 @@ class Interpret:
 			dump(new_factors, f)
 			f.close()
 			return(load(open(file_name, 'rb')))
-
 
 
 	def bayesian_update(self):
