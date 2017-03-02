@@ -26,20 +26,13 @@ class Interpret:
 		Tallies up the total responses of the data
 		"""
 		total = 0
-		if exists('total.txt') and reset == False:
-			return(load(open('total.txt','rb+')))
-		else:
-			for i in self.question_list:
-				for j in self.age_list:
-					for l in self.location_list:
-						result = self.data.get_data(l, j, i)
-						for x in result:
-							total += result[x]
+		for i in self.question_list:
+			for j in self.age_list:
+				for l in self.location_list:
+					result = self.data.get_data(l, j, i)
+					for x in result:
+						total += result[x]
 
-			f = open('total.txt', 'wb')
-			dump(total, f)
-			f.close()
-			return(load(open('total.txt', 'rb')))
 
 	def denominator_factor(self, question, answer):
 		"""
@@ -76,7 +69,8 @@ class Interpret:
 					factor[key] = 0
 		return(factor)
 
-	def bayesian_factor(self, question, answer):
+
+	def bayesian_single_factor(self, question, answer):
 		"""
 		Given a piece of data (question and answer), create dictionary with corresponding
 		P(D|H)
@@ -90,12 +84,47 @@ class Interpret:
 			if denominator[i] != 0:
 				factor[i] = float(numerator[i]/denominator[i])
 		return(factor)
+			
 
-	def bayesian_update(self):
+	def dictionary_of_qa(self):
+		dic_of_qa = {}
+		for l in self.location_list:
+			for a in self.age_list:
+				for q in self.question_list:
+					result = self.data.get_data(l, a, q)
+					if q not in dic_of_qa:
+						dic_of_qa[q] = []
+					for answer in result:
+						if answer not in dic_of_qa[q]:
+							dic_of_qa[q].append(answer)
+		return(dic_of_qa)
+		
+						
+	def bayesian_factors(self, file_name):
+
+		prev_factors = self.dictionary_of_qa()
+		new_factors = {}
+		for q in prev_factors:
+			for a in prev_factors[q]:
+				if q not in new_factors:
+					new_factors[q] = {}
+				new_factors[q][a] = self.bayesian_single_factor(q, a)
+		
+		if exists(file_name) and reset == False:
+			return(load(open(file_name,'rb+')))
+		else:
+			f = open(file_name, 'wb')
+			dump(new_factors, f)
+			f.close()
+			return(load(open(file_name, 'rb')))
+
+
+
+	def bayesian_update(self): #, prior, factor):
 		"""
 		Updates a prior probabilities with posterior probabilities using Bayesian
 		"""
-		dic1 = self.bayesian_factor(6, 'Somewhat familiar')
+		factors = load(open('bayesian_factors.txt', 'rb+'))
 
 
 data = Data('earthquake')
