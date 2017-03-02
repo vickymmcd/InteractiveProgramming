@@ -4,100 +4,104 @@ Authors: Emily Lepert and Vicky McDermott
 The Interpret class will take in the answer to a question and update
 the probability that someone is from a region and their age based on that response
 '''
+from data import Data
+from os.path import exists
+import sys
+from pickle import dump, load
 
 class Interpret:
-	def __init__(self, earthquake): #, commas, question, answer):
-		self.earthquake = earthquake
+	def __init__(self, other): #, commas, question, answer):
+		#self.earthquake = earthquake
+		self.data = other
 		#self.commas = commas
 		#self.question = question
 		#self.answer = answer
+		self.question_list = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+		self.age_list = ['18 - 29', '30 - 44', '45 - 59', '60']
+		self.location_list = ['East North Central', 'East South Central', 'Middle Atlantic', 
+			'Mountain', 'New England', 'Pacific', 'South Atlantic', 'West North Central', 'West South Central']
 
-	def reverse_empty_dictionary(self):
-		factors = {}
-		# first level of earthquake: locations
-		for i in self.earthquake: 
-			location = self.earthquake[i]
-			# second level: age
-			for j in location: # in age range of location
-				age = location[j]
-				new_question = {}
-				# third level: question
-				for l in age: # in question of age 
-					question = age[l]
-					
-					a = 0
-					factors[l] = new_question # value associated with q
-					# 4th level: answer
-					while a < len(question):
-						new_age = {}
-						new_answer = {}
-						new_question[a] = new_answer # value associated with each answer index
-						new_answer[i] = new_age # value associated with each location
-						new_age[j] = self.earthquake[i][j][l][a] # value associated with each age
-						factors[l][a][i][j] = self.earthquake[i][j][l][a]
-						
-						a +=1
-					#print(l)
-		return(factors)
+	def total_responses_with_file(self, reset=False):
+		"""
+		Tallies up the total responses of the data
+		"""
+		total = 0
+		if exists('total.txt') and reset == False:
+			return(load(open('total.txt','rb+')))
+		else:
+			for i in self.question_list:
+				for j in self.age_list:
+					for l in self.location_list:
+						result = self.data.get_data(l, j, i)
+						for x in result:
+							total += result[x]
 
-	def reverse_dictionary(self, factors):
-		'''
-		Makes a dictionary that, based on the answer to a question, gives the probability
-		that someone is from a location and age range
-		Basically it gives us P(D|H)
-		'''
-		# first level of earthquake: locations
-		for i in self.earthquake: 
-			location = self.earthquake[i]
-			
-			# second level: age
-			for j in location: # in age range of location
-				age = location[j]
-				# third level: question
-				for l in age: # in question of age 
-					question = age[l]
-					
-					a = 0
-					# 4th level: answer
-					while a < len(question):
-						factors[l][a][i][j] = self.earthquake[i][j][l][a]
-						a +=1
-		print(factors)
-					
+			f = open('total.txt', 'wb')
+			dump(total, f)
+			f.close()
+			return(load(open('total.txt', 'rb')))
 
-		
+	def denominator_factor(self, question, answer):
+		"""
+		Finds the total number of people for each hypothesis (location - age combo)
+		for a question
+		"""
+		denominator = {}
+		value = 0
+		for i in self.location_list:
+			for j in self.age_list:
+				specific_data = self.data.get_data(i, j, question)
+				key = i + '; ' + j
+				result = self.data.get_data(i, j, question)
+				for answer in result:
+					value += result[answer]
+				denominator[key] = value
+				value = 0
+		return(denominator)
 
-	def bayesian_update():
+
+	def numerator_factor(self, question, answer):
+		"""
+		Finds the number of people for each hypothesis (location - age combo) and each answer to a question
+		"""
+		factor = {}
+		for i in self.location_list:
+			for j in self.age_list:
+				key = i + '; ' + j
+				result = self.data.get_data(i, j, question)
+				if answer in result:
+					value = result[answer]
+					factor[key] = value
+				else:
+					factor[key] = 0
+		return(factor)
+
+	def bayesian_factor(self, question, answer):
+		"""
+		Given a piece of data (question and answer), create dictionary with corresponding
+		P(D|H)
+		H: string of location + age 
+		ie: 'East North Central; 18 - 29'
+		"""
+		denominator = self.denominator_factor(question, answer)
+		numerator = self.numerator_factor(question, answer)
+		factor = {}
+		for i in denominator:
+			if denominator[i] != 0:
+				factor[i] = float(numerator[i]/denominator[i])
+		return(factor)
+
+	def bayesian_update(self):
 		"""
 		Updates a prior probabilities with posterior probabilities using Bayesian
 		"""
-		pass
+		dic1 = self.bayesian_factor(6, 'Somewhat familiar')
 
-earthquake = {'loc1' : 
-				{'age1' : 
-					{'q1' : [1,2,3,4], 
-					'q2': [5,6,7,8], 
-					'q3' : [9,10,11,12]}, 
-				'age2' : 
-					{'q1' : [13,14,15,16], 
-					'q2': [17,18,19,20], 
-					'q3' : [21,22,23,24]} 
-				},
-			'loc2' : 
-				{'age1' : 
-					{'q1' : [25,26,27,28], 
-					'q2': [29,30,31,32], 
-					'q3' : [33,34,35,36]}, 
-				'age2' : 
-					{'q1' : [37,38,39,40], 
-					'q2': [41,42,43,44], 
-					'q3' : [45,46,47,48]} 
-				}
-			}
-newdictionary = Interpret(earthquake)
-reverse = newdictionary.reverse_empty_dictionary()
-print(reverse)
-#print(newdictionary.reverse_dictionary(reverse))
+
+data = Data('earthquake')
+newdictionary = Interpret(data)
+newdictionary.bayesian_update()
+
 
 
 

@@ -40,7 +40,7 @@ class Data:
                 else:
                     ages[line[7]] = [line[:7] + line[8:]]
             ultimate_dict[key] = ages
-        # print(ultimate_dict)
+        print(ultimate_dict)
         return ultimate_dict
 
     def sort_answers(self):
