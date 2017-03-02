@@ -10,12 +10,13 @@ import sys
 from pickle import dump, load
 
 class Interpret:
-	def __init__(self, other): #, commas, question, answer):
+	def __init__(self, other, prior, question, answer):
 		#self.earthquake = earthquake
 		self.data = other
+		self.prior = prior
 		#self.commas = commas
-		#self.question = question
-		#self.answer = answer
+		self.question = question
+		self.answer = answer
 		self.question_list = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 		self.age_list = ['18 - 29', '30 - 44', '45 - 59', '60']
 		self.location_list = ['East North Central', 'East South Central', 'Middle Atlantic', 
@@ -98,7 +99,7 @@ class Interpret:
 						if answer not in dic_of_qa[q]:
 							dic_of_qa[q].append(answer)
 		return(dic_of_qa)
-		
+
 						
 	def bayesian_factors(self, file_name):
 
@@ -120,16 +121,42 @@ class Interpret:
 
 
 
-	def bayesian_update(self): #, prior, factor):
+	def bayesian_update(self):
 		"""
 		Updates a prior probabilities with posterior probabilities using Bayesian
 		"""
 		factors = load(open('bayesian_factors.txt', 'rb+'))
+		list_of_factors = []
+		for i in factors[self.question][self.answer]:
+			list_of_factors.append(factors[self.question][self.answer][i])
+
+		product = []
+		j = 0
+		while j<len(list_of_factors):
+			prd = list_of_factors[j] * self.prior[j]
+			product.append(prd)
+			j += 1
+
+		total = 0
+		for l in product:
+			total += l
+
+		posterior = []
+		for k in product:
+			posterior.append(k/total)
+
+		sum_of_posterior = sum(posterior)
+		return(sum_of_posterior)
+		
 
 
 data = Data('earthquake')
-newdictionary = Interpret(data)
-newdictionary.bayesian_update()
+prior = [0.02777] * 36
+question = 0
+answer = "Somewhat worried"
+newdictionary = Interpret(data, prior, question, answer)
+
+print(newdictionary.bayesian_update())
 
 
 
