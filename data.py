@@ -40,6 +40,7 @@ class Data:
         '''
         self.lines[0].strip('"')
         ques = [line.strip('"') for line in self.lines[0].split('","')]
+        ques.pop(self.age_spot)
         return ques[number]
 
     def sort_by_location(self):
