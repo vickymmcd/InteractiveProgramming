@@ -10,9 +10,9 @@ import sys
 from pickle import dump, load
 
 class Interpret:
-	def __init__(self, other, prior, question, answer):
+	def __init__(self, data, prior, question, answer):
 		#self.earthquake = earthquake
-		self.data = other
+		self.data = data
 		self.prior = prior
 		#self.commas = commas
 		self.question = question
@@ -22,6 +22,13 @@ class Interpret:
 		self.location_list = ['East North Central', 'East South Central', 'Middle Atlantic', 
 			'Mountain', 'New England', 'Pacific', 'South Atlantic', 'West North Central', 'West South Central']
 
+	def key_creator(self):
+		key_list = []
+		for i in self.location_list:
+			for j in self.age_list:
+				key = i+'; '+j
+				key_list.append(key)
+		return(key_list)
 
 	def denominator_factor(self, question, answer):
 		"""
@@ -89,12 +96,48 @@ class Interpret:
 		return(dic_of_qa)
 
 						
-	def bayesian_factors(self, file_name):
+	def bayesian_factors(self, file_name, reset=False):
 
 		prev_factors = self.dictionary_of_qa()
 		new_factors = {}
 		for q in prev_factors:
 			for a in prev_factors[q]:
+				if q == '"Yes, one or more minor ones"':
+					print('1')
+					q = 'Yes, one or more minor ones'
+				elif q == '"Yes, one or more major ones"':
+					print('2')
+					q = 'Yes, one or more major ones'
+				elif q == '"$50,000 to $74,999"':
+					print('3')
+					q = '$50,000 to $74,999'
+				elif q == '"$0 to $9,999"':
+					print('4')
+					q = '$0 to $9,999'
+				elif q == '"$25,000 to $49,999"':
+					print('5')
+					q = '$25,000 to $49,999'
+				elif q == '"$10,000 to $24,999"':
+					print('6')
+					q = '$10,000 to $24,999'
+				elif q == '"$100,000 to $124,999"':
+					print('7')
+					q = '$100,000 to $124,999'
+				elif q == '"$75,000 to $99,999"':
+					print('8')
+					q = '$75,000 to $99,999'
+				elif q == '"$125,000 to $149,999"':
+					print('9')
+					q =  '$125,000 to $149,999'
+				elif q == '"$200,000 and up"':
+					print('10')
+					q = '$200,000 and up'
+				elif q == '"$150,000 to $174,999"':
+					print('11')
+					q = '$150,000 to $174,999'
+				elif q == '"$175,000 to $199,999"':
+					print('12')
+					q = '$175,000 to $199,999'
 				if q not in new_factors:
 					new_factors[q] = {}
 				new_factors[q][a] = self.bayesian_single_factor(q, a)
@@ -112,7 +155,9 @@ class Interpret:
 		"""
 		Updates a prior probabilities with posterior probabilities using Bayesian
 		"""
-		factors = load(open('bayesian_factors.txt', 'rb+'))
+		#self.bayesian_factors('bayesian_factors_key2.txt')
+		factors = load(open('bayesian_factors_key2.txt', 'rb+'))
+		#print(factors)
 		list_of_factors = []
 		for i in factors[self.question][self.answer]:
 			list_of_factors.append(factors[self.question][self.answer][i])
@@ -132,18 +177,43 @@ class Interpret:
 		for k in product:
 			posterior.append(k/total)
 
-		sum_of_posterior = sum(posterior)
-		return(sum_of_posterior)
-		
+		return(posterior)
+
+	def biggest_probability(self):
+		posterior = self.bayesian_update()
+		maximum = max(posterior)
+		index = posterior.index(maximum)
+		key_list = self.key_creator()
+		return(key_list[index])
 
 
 data = Data('earthquake')
 prior = [0.02777] * 36
-question = 0
-answer = "Somewhat worried"
-newdictionary = Interpret(data, prior, question, answer)
+newdictionary = Interpret(data, prior, 0, "Not at all worried")
+posterior1 = newdictionary.bayesian_update()
 
-print(newdictionary.bayesian_update())
+newdictionary1 = Interpret(data, posterior1, 1, "Not so worried")
+posterior2 = newdictionary1.bayesian_update()
+
+newdictionary2 = Interpret(data, posterior2, 2, "No")
+posterior3 = newdictionary2.bayesian_update()
+
+newdictionary3 = Interpret(data, posterior3, 3, 'No')
+posterior4 = newdictionary3.bayesian_update()
+
+newdictionary4 = Interpret(data, posterior4, 4, 'No')
+posterior5 = newdictionary4.bayesian_update()
+
+newdictionary5 = Interpret(data, posterior5, 5, 'Not so familiar')
+posterior6 = newdictionary5.bayesian_update()
+
+newdictionary6 = Interpret(data, posterior6, 6, 'Somewhat familiar')
+posterior7 = newdictionary6.bayesian_update()
+
+
+print(newdictionary6.biggest_probability())
+
+
 
 
 
