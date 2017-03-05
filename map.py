@@ -41,6 +41,10 @@ class Map:
                                              'y_coords': self.y_coords,
                                              'region': self.regions})
 
+    def get_fig(self):
+        self.update_map()
+        return self.figure
+
     def update_map(self, probs=[]):
         self.figure.patches(self.x_coords, self.y_coords, source=self.source,
                             line_color='red', color={'field': 'region',
