@@ -10,8 +10,9 @@ import sys
 from pickle import dump, load
 
 class Interpret:
-	def __init__(self, data, prior, question, answer):
+	def __init__(self, data, prior, question, answer, data_type):
 		#self.earthquake = earthquake
+		self.data_type = data_type
 		self.data = data
 		self.prior = prior
 		#self.commas = commas
@@ -84,6 +85,9 @@ class Interpret:
 
 	def dictionary_of_qa(self):
 		dic_of_qa = {}
+		if self.data_type != 'earthquake':
+			self.data_type = self.data_type[1:]
+
 		for l in self.location_list:
 			for a in self.age_list:
 				for q in self.question_list:
@@ -102,45 +106,36 @@ class Interpret:
 		new_factors = {}
 		for q in prev_factors:
 			for a in prev_factors[q]:
-				if q == '"Yes, one or more minor ones"':
-					print('1')
-					q = 'Yes, one or more minor ones'
-				elif q == '"Yes, one or more major ones"':
-					print('2')
-					q = 'Yes, one or more major ones'
-				elif q == '"$50,000 to $74,999"':
-					print('3')
-					q = '$50,000 to $74,999'
-				elif q == '"$0 to $9,999"':
-					print('4')
-					q = '$0 to $9,999'
-				elif q == '"$25,000 to $49,999"':
-					print('5')
-					q = '$25,000 to $49,999'
-				elif q == '"$10,000 to $24,999"':
-					print('6')
-					q = '$10,000 to $24,999'
-				elif q == '"$100,000 to $124,999"':
-					print('7')
-					q = '$100,000 to $124,999'
-				elif q == '"$75,000 to $99,999"':
-					print('8')
-					q = '$75,000 to $99,999'
-				elif q == '"$125,000 to $149,999"':
-					print('9')
-					q =  '$125,000 to $149,999'
-				elif q == '"$200,000 and up"':
-					print('10')
-					q = '$200,000 and up'
-				elif q == '"$150,000 to $174,999"':
-					print('11')
-					q = '$150,000 to $174,999'
-				elif q == '"$175,000 to $199,999"':
-					print('12')
-					q = '$175,000 to $199,999'
+				if self.data_type == 'earthquake':
+					if a == '"Yes, one or more minor ones"':
+						a1 = 'Yes, one or more minor ones'
+					elif a == '"Yes, one or more major ones"':
+						a1 = 'Yes, one or more major ones'
+					elif a == '"$50,000 to $74,999"':
+						a1 = '$50,000 to $74,999'
+					elif a == '"$0 to $9,999"':
+						a1 = '$0 to $9,999'
+					elif a == '"$25,000 to $49,999"':
+						a1 = '$25,000 to $49,999'
+					elif a == '"$10,000 to $24,999"':
+						a1 = '$10,000 to $24,999'
+					elif a == '"$100,000 to $124,999"':
+						a1 = '$100,000 to $124,999'
+					elif a == '"$75,000 to $99,999"':
+						a1 = '$75,000 to $99,999'
+					elif a == '"$125,000 to $149,999"':
+						a1 =  '$125,000 to $149,999'
+					elif a == '"$200,000 and up"':
+						a1 = '$200,000 and up'
+					elif a == '"$150,000 to $174,999"':
+						a1 = '$150,000 to $174,999'
+					elif a == '"$175,000 to $199,999"':
+						a1 = '$175,000 to $199,999'
+					else:
+						a1 = a
 				if q not in new_factors:
 					new_factors[q] = {}
-				new_factors[q][a] = self.bayesian_single_factor(q, a)
+				new_factors[q][a1] = self.bayesian_single_factor(q, a)
 		
 		if exists(file_name) and reset == False:
 			return(load(open(file_name,'rb+')))
@@ -155,12 +150,17 @@ class Interpret:
 		"""
 		Updates a prior probabilities with posterior probabilities using Bayesian
 		"""
-		#self.bayesian_factors('bayesian_factors_key2.txt')
-		factors = load(open('bayesian_factors_key2.txt', 'rb+'))
-		#print(factors)
+		#self.bayesian_factors('earthquake_factors.txt')
+		if self.data_type != 'earthquake':
+			self.question_list = self.question_list[1:]
+			factors = load(open('comma_factors.txt'))
+		else:
+			factors = load(open('earthquake_factors.txt', 'rb+'))
+		print(factors)
 		list_of_factors = []
 		for i in factors[self.question][self.answer]:
 			list_of_factors.append(factors[self.question][self.answer][i])
+		
 
 		product = []
 		j = 0
@@ -168,14 +168,17 @@ class Interpret:
 			prd = list_of_factors[j] * self.prior[j]
 			product.append(prd)
 			j += 1
-
+		print('\n')
 		total = 0
 		for l in product:
 			total += l
 
 		posterior = []
 		for k in product:
-			posterior.append(k/total)
+			if total != 0:
+				posterior.append(k/total)
+			else:
+				posterior.append(0)
 
 		return(posterior)
 
@@ -189,29 +192,30 @@ class Interpret:
 
 data = Data('earthquake')
 prior = [0.02777] * 36
-newdictionary = Interpret(data, prior, 0, "Not at all worried")
+
+newdictionary = Interpret(data, prior, 0, "Not at all worried", "earthquake")
 posterior1 = newdictionary.bayesian_update()
 
-newdictionary1 = Interpret(data, posterior1, 1, "Not so worried")
+newdictionary1 = Interpret(data, posterior1, 1, "Not so worried", "earthquake")
 posterior2 = newdictionary1.bayesian_update()
 
-newdictionary2 = Interpret(data, posterior2, 2, "No")
+newdictionary2 = Interpret(data, posterior2, 2, "No", "earthquake")
 posterior3 = newdictionary2.bayesian_update()
 
-newdictionary3 = Interpret(data, posterior3, 3, 'No')
+newdictionary3 = Interpret(data, posterior3, 3, "Yes, one or more minor ones", "earthquake")
 posterior4 = newdictionary3.bayesian_update()
 
-newdictionary4 = Interpret(data, posterior4, 4, 'No')
+newdictionary4 = Interpret(data, posterior4, 4, 'No', "earthquake")
 posterior5 = newdictionary4.bayesian_update()
 
-newdictionary5 = Interpret(data, posterior5, 5, 'Not so familiar')
+newdictionary5 = Interpret(data, posterior5, 5, 'Not so familiar', "earthquake")
 posterior6 = newdictionary5.bayesian_update()
 
-newdictionary6 = Interpret(data, posterior6, 6, 'Somewhat familiar')
+newdictionary6 = Interpret(data, posterior6, 6, 'Somewhat familiar', "earthquake")
 posterior7 = newdictionary6.bayesian_update()
 
-
 print(newdictionary6.biggest_probability())
+
 
 
 
