@@ -13,7 +13,9 @@ class Layout:
     def __init__(self):
         self.map = Map()
         self.ageline = AgeLine()
-        self.layout = column(self.map.get_fig(), self.ageline.get_fig())
+        self.layout = column(self.map.get_fig([.1, .1, .1, .1, .1,
+                                               .1, .1, .1, .1, .1]),
+                             self.ageline.get_fig())
 
     def show_layout(self):
         output_file('layout.html')
