@@ -20,10 +20,29 @@ class Map:
                         1, 5, 8, 8, 0, 7, 5, 4, 4, 7, 4, 9, 5, 7, 0, 0, 5, 7,
                         7, 5, 5, 0, 0, 0, 0, 6, 6, 3, 4, 3, 9, 2, 4, 1, 2, 7,
                         4, 8]
-        self.mapper = CategoricalColorMapper(factors=[0, .1, .2, .3, .4, .5,
-                                                      .6, .7, .8, .9, 1],
+        self.mapper = CategoricalColorMapper(factors=[0, .01, .02, .03, .04,
+                                                      .05, .06, .07, .08, .09,
+                                                      .1, .11, .12, .13, .14,
+                                                      .15, .16, .17, .18, .19,
+                                                      .2, .21, .22, .23, .24,
+                                                      .25, .26, .27, .28, .29,
+                                                      .3, .31, .32, .33, .34,
+                                                      .35, .36, .37, .38, .39,
+                                                      .4, .41, .42, .43, .44,
+                                                      .45, .46, .47, .48, .49,
+                                                      .5, .51, .52, .53, .54,
+                                                      .55, .56, .57, .58, .59,
+                                                      .6, .61, .62, .63, .64,
+                                                      .65, .66, .67, .68, .69,
+                                                      .7, .71, .72, .73, .74,
+                                                      .75, .76, .77, .78, .79,
+                                                      .8, .81, .82, .83, .84,
+                                                      .85, .86, .87, .88, .89,
+                                                      .9, .91, .92, .93, .94,
+                                                      .95, .96, .97, .98, .99,
+                                                      1],
                                              palette=bokeh.palettes.
-                                             magma(11))
+                                             magma(101))
         self.sf = shapefile.Reader("StateBorders/cb_2015_us_state_5m.shp")
         self.shapes = self.sf.shapes()
         for i, shape in enumerate(self.shapes):
@@ -56,7 +75,8 @@ class Map:
                                              'probability': state_probs})
         self.figure.patches(self.x_coords, self.y_coords, source=self.source,
                             line_color='red', color={'field': 'probability',
-                                                     'transform': self.mapper})
+                                                     'transform': self.mapper},
+                            legend='probability')
 
     def show_the_map(self):
         self.update_map([1, 0, .4, .5, .7, .9, 1, 0, .3, .4])

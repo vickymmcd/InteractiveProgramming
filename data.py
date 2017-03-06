@@ -30,6 +30,7 @@ class Data:
             self.lines = f.readlines()
             self.num_of_ques = 11
             self.age_spot = 9
+            self.fix_ages()
 
     def get_question(self, number):
         '''
@@ -55,11 +56,28 @@ class Data:
                      'Pacific': [], 'South Atlantic': [],
                      'West North Central': [], 'West South Central': []}
         for line in self.lines:
-            current_line = line.split(';')
-            key = current_line[len(current_line)-1].strip()
+            key = line[len(line)-1].strip()
             if key in locations:
-                locations[str(key)].append(current_line[:len(current_line)-1])
+                locations[str(key)].append(line[:len(line)-1])
         return locations
+
+    def fix_ages(self):
+        '''
+        This function fixes the ages so they are all in the same format.
+
+        '''
+        for i, line in enumerate(self.lines):
+            line = line.split(';')
+            if i > 0:
+                if line[self.age_spot] == '18-29':
+                    line[self.age_spot] = '18 - 29'
+                elif line[self.age_spot] == '30-44':
+                    line[self.age_spot] = '30 - 44'
+                elif line[self.age_spot] == '45-60':
+                    line[self.age_spot] = '45 - 59'
+                elif line[self.age_spot] == '> 60':
+                    line[self.age_spot] = '60'
+                self.lines[i] = line
 
     def sort_by_age(self):
         '''
