@@ -1,7 +1,7 @@
 '''
 Authors: Vicky McDermott and Emily Lepert
 
-This function represents the visual Map object.
+This function represents the visual Age Line object.
 '''
 from bokeh.plotting import figure, output_file, show
 from bokeh.models import CategoricalColorMapper, ColumnDataSource, HoverTool
@@ -37,9 +37,11 @@ class AgeLine:
                                                       1],
                                              palette=bokeh.palettes.
                                              magma(101))
-        self.hover = HoverTool(tooltips=[('probability', '@probs')])
+        self.hover = HoverTool(tooltips=[('Age', '@age'),
+                                         ('Probability', '@probs')])
         self.figure = figure(title='Your Age', plot_height=200, plot_width=700,
-                             tools=[self.hover, 'pan', 'wheel_zoom'])
+                             tools=[self.hover, 'pan', 'wheel_zoom'],
+                             x_axis_label='Age')
 
     def get_fig(self, probs):
         self.update_ageline(probs)
@@ -48,7 +50,9 @@ class AgeLine:
     def update_ageline(self, probs=[]):
         self.source = ColumnDataSource(data={'x_coords': self.x_coords,
                                              'y_coords': self.y_coords,
-                                             'probs': probs})
+                                             'probs': probs,
+                                             'age': ['18-29', '30-44', '45-59',
+                                                     '60+']})
         self.figure.patches(self.x_coords, self.y_coords, source=self.source,
                             line_color='red', color={'field': 'probs',
                                                      'transform': self.mapper})

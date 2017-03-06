@@ -48,11 +48,17 @@ class Map:
             for point in shape.points:
                 self.x_coords[i].append(point[0])
                 self.y_coords[i].append(point[1])
-        self.hover = HoverTool(tooltips=[('probability', '@probability')])
+        self.hover = HoverTool(tooltips=[('Region', '@region_name'),
+                                         ('Probability', '@probability')])
         self.figure = figure(title='Your Location', plot_width=1200,
                              plot_height=700, x_range=(-130, -60),
                              y_range=(24, 50), tools=[self.hover, 'pan',
                                                       'wheel_zoom'])
+        self.region_names = ['Unknown', 'East North Central',
+                             'East South Central', 'Middle Atlantic',
+                             'Mountain', 'New England', 'Pacific',
+                             'South Atlantic', 'West North Central',
+                             'West South Central']
 
     def get_fig(self, probs):
         self.update_map(probs)
@@ -65,13 +71,16 @@ class Map:
         # probs list should be in region order so 1st element
         # has probability for first region, etc.
         state_probs = []
+        state_regions = []
         for region in self.regions:
             state_probs.append(probs[region])
+            state_regions.append(self.region_names[region])
         print(state_probs)
         self.source = ColumnDataSource(data={'x_coords': self.x_coords,
                                              'y_coords': self.y_coords,
-                                             'region': self.regions,
-                                             'probability': state_probs})
+                                             'region_num': self.regions,
+                                             'probability': state_probs,
+                                             'region_name': state_regions})
         self.figure.patches(self.x_coords, self.y_coords, source=self.source,
                             line_color='red', color={'field': 'probability',
                                                      'transform': self.mapper})
