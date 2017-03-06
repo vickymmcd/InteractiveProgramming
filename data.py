@@ -100,7 +100,7 @@ class Data:
                     ages[line[self.age_spot]] = [line[:self.age_spot] +
                                                  line[self.age_spot+1:]]
             ultimate_dict[key] = ages
-        # print(ultimate_dict)
+        #print(ultimate_dict)
         return ultimate_dict
 
     def sort_answers(self):
@@ -108,6 +108,7 @@ class Data:
         Sorts the data by questions and numbers of answers for
         each age/location
         """
+        print(self.type)
         if self.type == 'earthquake':
             file_name = 'earthquake_dict.pickle'
         elif self.type == 'comma':
@@ -172,7 +173,7 @@ class Data:
         f.write(self.lines[0])
         for i in range(len(self.lines)):
             if i > 0:
-                print(i)
+                #print(i)
                 my_line = list(self.lines[i])
                 for i, letter in enumerate(my_line):
                     if letter == ',':
@@ -184,7 +185,7 @@ class Data:
                             my_line[i] = ';'
                             print('fixing a comma')
                 self.lines[i] = ''.join(my_line)
-                print(self.lines[i])
+                #print(self.lines[i])
                 f.write(self.lines[i])
 
     def get_data(self, location, age, question):
