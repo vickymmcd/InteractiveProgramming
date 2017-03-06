@@ -4,16 +4,13 @@ Authors: Vicky McDermott and Emily Lepert
 This function represents the visual Map object.
 '''
 from bokeh.plotting import figure, output_file, show
-from bokeh.models import CategoricalColorMapper, ColumnDataSource
+from bokeh.models import CategoricalColorMapper, ColumnDataSource, HoverTool
 import bokeh.palettes
 import shapefile
 
 
 class Map:
     def __init__(self):
-        self.figure = figure(title='Your Location', plot_width=1200,
-                             plot_height=700, x_range=(-130, -60),
-                             y_range=(24, 50))
         self.x_coords = []
         self.y_coords = []
         self.regions = [8, 4, 0, 8, 6, 2, 1, 7, 1, 9, 3, 8, 9, 2, 7, 1, 8, 4,
@@ -51,9 +48,11 @@ class Map:
             for point in shape.points:
                 self.x_coords[i].append(point[0])
                 self.y_coords[i].append(point[1])
-        self.source = ColumnDataSource(data={'x_coords': self.x_coords,
-                                             'y_coords': self.y_coords,
-                                             'region': self.regions})
+        self.hover = HoverTool(tooltips=[('probability', '@probability')])
+        self.figure = figure(title='Your Location', plot_width=1200,
+                             plot_height=700, x_range=(-130, -60),
+                             y_range=(24, 50), tools=[self.hover, 'pan',
+                                                      'wheel_zoom'])
 
     def get_fig(self, probs):
         self.update_map(probs)
@@ -75,8 +74,7 @@ class Map:
                                              'probability': state_probs})
         self.figure.patches(self.x_coords, self.y_coords, source=self.source,
                             line_color='red', color={'field': 'probability',
-                                                     'transform': self.mapper},
-                            legend='probability')
+                                                     'transform': self.mapper})
 
     def show_the_map(self):
         self.update_map([1, 0, .4, .5, .7, .9, 1, 0, .3, .4])
