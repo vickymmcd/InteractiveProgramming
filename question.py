@@ -63,7 +63,7 @@ class Question():
 
 		return(choices)
 
-	def return_layout(self):
+	def get_fig(self):
 		#returns the appropriate layout
 		choices = self.choose_choices()
 		widget = choices.layout()
