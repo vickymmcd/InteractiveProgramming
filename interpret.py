@@ -6,8 +6,8 @@ the probability that someone is from a region and their age based on that respon
 '''
 from data import Data
 from os.path import exists
-import sys
 from pickle import dump, load
+import sys
 
 class Interpret:
 	def __init__(self, data, prior, question, answer, data_type):
@@ -23,11 +23,12 @@ class Interpret:
 		self.answer = answer
 
 		#list of question indices
-		self.question_list = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+		if self.data_type == 'comma':
+			self.question_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+		elif self.data_type == 'earthquake':
+			self.question_list = [0, 1, 2, 3, 4, 5, 6]
 		#age lists
-		self.age_list_earthquake = ['18 - 29', '30 - 44', '45 - 59', '60']
-		self.age_list_comma = ['18-29', '30-44', '45-60', '> 60']
-		self.age_list = []
+		self.age_list = ['18 - 29', '30 - 44', '45 - 59', '60']
 
 		#location list
 		self.location_list = ['East North Central', 'East South Central', 'Middle Atlantic', 
@@ -44,6 +45,38 @@ class Interpret:
 				key_list.append(key)
 		return(key_list)
 
+	def key_formatting(self, a):
+		if self.data_type == 'earthquake':
+			if a == '"Yes, one or more minor ones"':
+				a1 = 'Yes, one or more minor ones'
+			elif a == '"Yes, one or more major ones"':
+				a1 = 'Yes, one or more major ones'
+			else:
+				a1 = a
+		elif self.data_type == 'comma':
+			if a == '"It\'s important for a person to be honest, kind and loyal."':
+				a1 = "It's important for a person to be honest, kind and loyal."
+			elif a == '"It\'s important for a person to be honest, kind, and loyal."':
+				a1 = "It's important for a person to be honest, kind, and loyal."
+			elif a == '"Some experts say it\'s important to drink milk, but the data are inconclusive."':
+				a1 = "Some experts say it's important to drink milk, but the data are inconclusive."
+			elif a == '"Some experts say it\'s important to drink milk, but the data is inconclusive."':
+				a1 = "Some experts say it's important to drink milk, but the data is inconclusive."
+			elif a == '"$50,000 - $99,999"':
+				a1 = '$50,000 - $99,999'
+			elif a == '"$25,000 - $49,999"':
+				a1 = '$25,000 - $49,999'
+			elif a == '"$0 - $24,999"':
+				a1 = '$0 - $24,999'
+			elif a == '"$150,000+"':
+				a1 = '$150,000+'
+			elif a == '"$100,000 - $149,999"':
+				a1 = '$100,000 - $149,999'
+			else:
+				a1 = a
+
+		return(a1)
+
 	def denominator_factor(self, question, answer):
 		"""
 		Finds the total number of people for each hypothesis (location - age combo)
@@ -54,35 +87,12 @@ class Interpret:
 		for i in self.location_list:
 			for j in self.age_list:
 				key = i + '; ' + j
+				#calls on the get_data method of the Data class
+				#returns dictionary of answers to a question with the number of people
+				#who answered each answer
 				result = self.data.get_data(i, j, question)
-				for a in result:
-					if self.data_type == 'earthquake':
-						if a == '"Yes, one or more minor ones"':
-							a1 = 'Yes, one or more minor ones'
-						elif a == '"Yes, one or more major ones"':
-							a1 = 'Yes, one or more major ones'
-						elif a == '"$50,000 to $74,999"':
-							a1 = '$50,000 to $74,999'
-						elif a == '"$0 to $9,999"':
-							a1 = '$0 to $9,999'
-						elif a == '"$25,000 to $49,999"':
-							a1 = '$25,000 to $49,999'
-						elif a == '"$10,000 to $24,999"':
-							a1 = '$10,000 to $24,999'
-						elif a == '"$100,000 to $124,999"':
-							a1 = '$100,000 to $124,999'
-						elif a == '"$75,000 to $99,999"':
-							a1 = '$75,000 to $99,999'
-						elif a == '"$125,000 to $149,999"':
-							a1 =  '$125,000 to $149,999'
-						elif a == '"$200,000 and up"':
-							a1 = '$200,000 and up'
-						elif a == '"$150,000 to $174,999"':
-							a1 = '$150,000 to $174,999'
-						elif a == '"$175,000 to $199,999"':
-							a1 = '$175,000 to $199,999'
-						else:
-							a1 = a
+				for a1 in result:
+					#a1 = self.key_formatting(a)
 					# go through all the # of answers to a question and add them to one variable
 					value += result[a1]
 				#key is location-age, value is the total # of answers to a question
@@ -99,38 +109,11 @@ class Interpret:
 			for j in self.age_list:
 				key = i + '; ' + j
 				result = self.data.get_data(i, j, question)
-
 				if a in result:
-					if self.data_type == 'earthquake':
-						if a == '"Yes, one or more minor ones"':
-							a1 = 'Yes, one or more minor ones'
-						elif a == '"Yes, one or more major ones"':
-							a1 = 'Yes, one or more major ones'
-						elif a == '"$50,000 to $74,999"':
-							a1 = '$50,000 to $74,999'
-						elif a == '"$0 to $9,999"':
-							a1 = '$0 to $9,999'
-						elif a == '"$25,000 to $49,999"':
-							a1 = '$25,000 to $49,999'
-						elif a == '"$10,000 to $24,999"':
-							a1 = '$10,000 to $24,999'
-						elif a == '"$100,000 to $124,999"':
-							a1 = '$100,000 to $124,999'
-						elif a == '"$75,000 to $99,999"':
-							a1 = '$75,000 to $99,999'
-						elif a == '"$125,000 to $149,999"':
-							a1 =  '$125,000 to $149,999'
-						elif a == '"$200,000 and up"':
-							a1 = '$200,000 and up'
-						elif a == '"$150,000 to $174,999"':
-							a1 = '$150,000 to $174,999'
-						elif a == '"$175,000 to $199,999"':
-							a1 = '$175,000 to $199,999'
-						else:
-							a1 = a
+					a1 = self.key_formatting(a)
 					#if the answer to the question is in result, 
 					#value is the number of people who's response was answer
-					value = result[a1]
+					value = result[a]
 					#key is location-age
 					factor[key] = value
 				else:
@@ -147,6 +130,7 @@ class Interpret:
 		Creates a dictionary for each specific question answer combo
 		"""
 		denominator = self.denominator_factor(question, answer)
+		
 		numerator = self.numerator_factor(question, answer)
 		factor = {}
 		for i in denominator:
@@ -160,10 +144,6 @@ class Interpret:
 		Creates a dictionary of questions with all the responses
 		"""
 		dic_of_qa = {}
-		#filters for the right data type
-		if self.data_type == 'earthquake':
-			self.age_list = self.age_list_earthquake
-
 
 		for l in self.location_list:
 			for a in self.age_list:
@@ -175,36 +155,9 @@ class Interpret:
 						dic_of_qa[q] = []
 					#for every answer to the question
 					for b in result:
-						if self.data_type == 'earthquake':
-							#these if statements reformat the answer strings
-							if b == '"Yes, one or more minor ones"':
-								a1 = 'Yes, one or more minor ones'
-							elif b == '"Yes, one or more major ones"':
-								a1 = 'Yes, one or more major ones'
-							elif b == '"$50,000 to $74,999"':
-								a1 = '$50,000 to $74,999'
-							elif b == '"$0 to $9,999"':
-								a1 = '$0 to $9,999'
-							elif b == '"$25,000 to $49,999"':
-								a1 = '$25,000 to $49,999'
-							elif b == '"$10,000 to $24,999"':
-								a1 = '$10,000 to $24,999'
-							elif b == '"$100,000 to $124,999"':
-								a1 = '$100,000 to $124,999'
-							elif b == '"$75,000 to $99,999"':
-								a1 = '$75,000 to $99,999'
-							elif b == '"$125,000 to $149,999"':
-								a1 =  '$125,000 to $149,999'
-							elif b == '"$200,000 and up"':
-								a1 = '$200,000 and up'
-							elif b == '"$150,000 to $174,999"':
-								a1 = '$150,000 to $174,999'
-							elif b== '"$175,000 to $199,999"':
-								a1 = '$175,000 to $199,999'
-							else:
-								a1 = b
-						if a1 not in dic_of_qa[q]:
-							dic_of_qa[q].append(a1)
+						#a1 = self.key_formatting(b)
+						if b not in dic_of_qa[q]:
+							dic_of_qa[q].append(b)
 		return(dic_of_qa)
 					
 	def bayesian_factors(self, file_name, reset=False):
@@ -217,8 +170,11 @@ class Interpret:
 			for a in prev_factors[q]:
 				if q not in new_factors:
 					new_factors[q] = {}
-				new_factors[q][a] = self.bayesian_single_factor(q, a)
+				#clean the keys up
+				a1 = self.key_formatting(a)
+				new_factors[q][a1] = self.bayesian_single_factor(q, a)
 		
+		#pickles info to a txt file
 		if exists(file_name) and reset == False:
 			return(load(open(file_name,'rb+')))
 		else:
@@ -232,16 +188,13 @@ class Interpret:
 		Updates a prior probabilities with posterior probabilities using Bayesian
 		"""
 		if self.data_type == 'comma':
-			self.age_list = self.age_list_comma
-			self.question_list = [x+1 for x in self.question_list]
 			#self.bayesian_factors('comma_factors.txt')
-			factors = load(open('comma_factors.txt'))
+			factors = load(open('comma_factors.txt', 'rb+'))
 		elif self.data_type == 'earthquake':
 			factors = load(open('earthquake_factors.txt', 'rb+'))
-			self.age_list = self.age_list_earthquake
-
 		list_of_factors = []
 		#index into the right question answer combo
+
 		for i in factors[self.question][self.answer]:
 			list_of_factors.append(factors[self.question][self.answer][i])
 
@@ -252,7 +205,7 @@ class Interpret:
 			prd = list_of_factors[j] * self.prior[j]
 			product.append(prd)
 			j += 1
-		print('\n')
+
 		total = 0
 		#find normalizing factor
 		for l in product:
@@ -279,35 +232,9 @@ class Interpret:
 		return(key_list[index])
 
 
-data = Data('earthquake')
-prior = [0.02777] * 36
-newdictionary1 = Interpret(data, prior, 0, "Not at all worried", "earthquake")
-posterior1 = newdictionary1.bayesian_update()
-print(posterior1)
-"""
-newdictionary = Interpret(data, prior, 0, "It's important for a person to be honest, kind, and loyal.", "comma")
-posterior1 = newdictionary.bayesian_update()
+#data = Data('comma')
+#prior = [0.02777] * 36
 
-newdictionary1 = Interpret(data, posterior1, 1, "Yes", "comma")
-posterior2 = newdictionary1.bayesian_update()
-
-newdictionary2 = Interpret(data, posterior2, 2, "Some", "comma")
-posterior3 = newdictionary2.bayesian_update()
-
-newdictionary3 = Interpret(data, posterior3, 3, "Some experts say it's important to drink milk, but the data are inconclusive.", "comma")
-posterior4 = newdictionary3.bayesian_update()
-
-newdictionary4 = Interpret(data, posterior4, 4, 'Yes', "comma")
-posterior5 = newdictionary4.bayesian_update()
-
-newdictionary5 = Interpret(data, posterior5, 5, 'Not much', "comma")
-posterior6 = newdictionary5.bayesian_update()
-
-newdictionary6 = Interpret(data, posterior6, 6, 'Somewhat important', "comma")
-posterior7 = newdictionary6.bayesian_update()
-
-print(newdictionary6.biggest_probability())
-"""
 
 
 
