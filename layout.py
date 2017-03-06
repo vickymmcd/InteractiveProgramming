@@ -15,7 +15,7 @@ class Layout:
         self.ageline = AgeLine()
         self.layout = column(self.map.get_fig([.14, .14, .14, .14, .14,
                                                .14, .14, .14, .14, .14]),
-                             self.ageline.get_fig())
+                             self.ageline.get_fig([.25, .25, .25, .25]))
 
     def show_layout(self):
         output_file('layout.html')
