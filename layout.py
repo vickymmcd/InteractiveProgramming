@@ -14,15 +14,15 @@ from bokeh.plotting import output_file, show
 
 
 class Layout:
-    def __init__(self, question_index, data, data_type):
+    def __init__(self, question_index, interpret, data_type, data):
         self.map = Map()
         self.ageline = AgeLine()
         self.scaleline = ScaleLine()
-        self.question = Question(question_index, data, data_type)
+        self.question = Question(question_index, interpret, data_type, data)
         self.layout = row(column(self.map.get_fig([0, .11, .11, .11, .11,
                                                .11, .11, .11, .11, .11]),
                              self.ageline.get_fig([.25, .25, .25, .25]),
-                             self.scaleline.get_fig()), self.question.get_fig())
+                             self.scaleline.get_fig()), column(self.question.get_fig(), self.question.get_button()))
 
     def show_layout(self):
         output_file('layout.html')
@@ -34,5 +34,5 @@ if __name__ == '__main__':
     data = Data('comma')
     prior = [0.02777] * 36
     newdictionary1 = Interpret(data, prior, 2, "No", "comma")
-    layout = Layout(1, newdictionary1, "comma")
+    layout = Layout(1, newdictionary1, "comma", data)
     layout.show_layout()
