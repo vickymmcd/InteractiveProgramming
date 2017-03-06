@@ -3,7 +3,7 @@ This is the question class
 """
 from interpret import Interpret
 from data import Data
-from bokeh.io import output_file, show
+from bokeh.io import output_file, show, vform
 from bokeh.layouts import widgetbox
 from bokeh.models.widgets import RadioGroup
 from bokeh.models.widgets import Div
@@ -13,16 +13,22 @@ class Question():
 	"""
 	Class creates the layout for each question
 	"""
-	def __init__(self,index, other, data_type):
+	next_button= Toggle(label="Next", button_type="success")
+	def __init__(self,index, interpret, data_type, data):
 		#differentiates between earthquake and comma
 		self.data_type = data_type
 		#Interpret class reference
-		self.interpret = other
+		self.interpret = interpret
 		#question number in either earthquake or comma
 		self.index = index
 		#dictionary of questions and answers from the Interpret class
 		self.qa = self.interpret.dictionary_of_qa()
 
+		#self.next_button = Toggle(label="Next", button_type="success")
+		self.question = Div(text="example")
+		self.answer = RadioGroup(labels=['dfd', 'dfd'], active=0)
+
+		self.question_type = data.get_question(self.index)
 		#for the sake of simplicity and time, writing the questions down saves time
 		#but in the long term we would have to implement an automatic way of doing this
 		#list of comma questions
@@ -45,29 +51,31 @@ class Question():
 			"How familiar are you with the San Andreas Fault line?",
 			"How familiar are you with the Yellowstone Supervolcano?"]
 
-	def choose_choices(self):
+	def get_fig(self):
 		"""
 		Chooses between a 2 answer options question or 5 answer options question
 		"""
 		#uses the data_type info to select the appropriate questions list
+		"""
 		if self.data_type == "comma":
 			questions = self.comma_questions
 		elif self.data_type == "earthquake":
 			questions = self.earthquake_questions
-
+		"""
+		self.question = Div(text=self.question_type)
 		#calls the appropriate layout class based on the options
 		if len(self.qa[self.index]) == 2:
-			choices = Two_choices(questions[self.index], self.qa[self.index])
+			self.answer = RadioGroup(labels=[self.qa[self.index][0], self.qa[self.index][1]], active=0)
+			choices = widgetbox(self.question,self.answer)
 		elif len(self.qa[self.index]) == 5:
-			choices = Five_choices(questions[self.index], self.qa[self.index])
+			self.answer = RadioGroup(labels=[self.qa[self.index][0],self.qa[self.index][1],self.qa[self.index][2], self.qa[self.index][3], self.qa[self.index][4]], active=0)
+			choices = widgetbox(self.question,self.answer)
 
 		return(choices)
 
-	def get_fig(self):
-		#returns the appropriate layout
-		choices = self.choose_choices()
-		widget = choices.layout()
-		return(widget)
+	def get_button(self):
+		button = vform(Question.next_button)
+		return(button)
 
 
 class Two_choices():
@@ -82,10 +90,9 @@ class Two_choices():
 		"""
 		Specifies the layout
 		"""
-		question = Div(text=self.question)
+		
 		answers = RadioGroup(labels=[self.answers[0], self.answers[1]], active=0)
-		next_button = Toggle(label="Next", button_type="success")
-		widget = widgetbox(question,answers, next_button)
+		widget = widgetbox(question,answers, self.next_button)
 		return(widget)
 
 class Five_choices():
@@ -100,10 +107,8 @@ class Five_choices():
 		"""
 		Specifies the layout
 		"""
-		question = Div(text=self.question)
-		answers = RadioGroup(labels=[self.answers[0], self.answers[1],self.answers[2], self.answers[3], self.answers[4]], active=0)
-		next_button = Toggle(label="Next", button_type="success")
-		widget = widgetbox(question,answers, next_button)
+		self.answer = RadioGroup(labels=[self.answers[0], self.answers[1],self.answers[2], self.answers[3], self.answers[4]], active=0)
+		widget = widgetbox(self.question,self.answer, self.next_button)
 		return(widget)
 
 """
