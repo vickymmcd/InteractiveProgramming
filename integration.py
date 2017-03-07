@@ -22,6 +22,7 @@ class Integration():
 		answers = self.layout.show_list_answers()[0]
 		question_index = self.layout.show_list_answers()[1]
 		response = answers[new]
+		self.layout.update_stuff(question_index, answers[new], self.data_type)
 		print(response, question_index)
 
 	def define_layout(self):

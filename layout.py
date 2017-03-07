@@ -56,7 +56,7 @@ class Layout:
 
     def update_stuff(self, ques_num, response, data_type):
         data = Data(data_type)
-        interpret = Interpret(data, self.priors, ques_num, response, data_type)
+        interpret = Interpret(self.priors, ques_num, response, data_type)
         self.priors = interpret.bayesian_update()
         region1_probs = 0
         region2_probs = 0
@@ -105,8 +105,10 @@ class Layout:
         self.layout = row(column(self.map.get_fig(self.region_probs),
                                  self.ageline.get_fig(self.age_probs),
                                  self.scaleline.get_fig()),
-                          column(self.question.get_fig(),
+                          column(self.question.get_fig()[0],
                                  self.question.get_button()))
+        self.map.update_map(self.region_probs)
+        self.ageline.update_ageline(self.age_probs)
 
 
 """
