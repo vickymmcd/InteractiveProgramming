@@ -16,7 +16,7 @@ class Integration():
 
 	def __init__(self):
 		self.data_type = 'comma'
-		self.layout = Layout(1, Interpret([0.02777] * 36, 2, "No", "comma"), self.data_type, Data('comma'), [.25, .25, .25, .25], [0, .11, .11, .11, .11, .11, .11, .11, .11, .11])
+		self.layout = Layout(1, Interpret([0.02777] * 36, 2, "No", "comma"), self.data_type, Data('comma'))
 
 	def update_layout(self, new):
 		answers = self.layout.show_list_answers()[0]

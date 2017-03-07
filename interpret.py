@@ -1,4 +1,4 @@
-''' 
+'''
 Authors: Emily Lepert and Vicky McDermott
 
 The Interpret class will take in the answer to a question and update
@@ -34,7 +34,7 @@ class Interpret:
 		self.age_list = ['18 - 29', '30 - 44', '45 - 59', '60']
 
 		#location list
-		self.location_list = ['East North Central', 'East South Central', 'Middle Atlantic', 
+		self.location_list = ['East North Central', 'East South Central', 'Middle Atlantic',
 			'Mountain', 'New England', 'Pacific', 'South Atlantic', 'West North Central', 'West South Central']
 
 	def key_creator(self):
@@ -47,6 +47,22 @@ class Interpret:
 				key = i+'; '+j
 				key_list.append(key)
 		return(key_list)
+
+	def get_location(self, key):
+		'''
+		Gets the location associated with a given posterior output
+		'''
+		keys = self.key_creator()
+		my_key = keys[key].split(';')
+		return my_key[0]
+
+	def get_age(self, key):
+		'''
+		Gets the location associated with a given posterior output
+		'''
+		keys = self.key_creator()
+		my_key = keys[key].split(';')
+		return my_key[1]
 
 	def key_formatting(self, a):
 		if self.data_type == 'earthquake':
@@ -114,7 +130,7 @@ class Interpret:
 				result = self.data.get_data(i, j, question)
 				if a in result:
 					a1 = self.key_formatting(a)
-					#if the answer to the question is in result, 
+					#if the answer to the question is in result,
 					#value is the number of people who's response was answer
 					value = result[a]
 					#key is location-age
@@ -128,12 +144,12 @@ class Interpret:
 		"""
 		Given a piece of data (question and answer), create dictionary with corresponding
 		P(D|H)
-		H: string of location + age 
+		H: string of location + age
 		ie: 'East North Central; 18 - 29'
 		Creates a dictionary for each specific question answer combo
 		"""
 		denominator = self.denominator_factor(question, answer)
-		
+
 		numerator = self.numerator_factor(question, answer)
 		factor = {}
 		for i in denominator:
@@ -141,7 +157,7 @@ class Interpret:
 				#create a dictionary with the ratio of numerator/denominator
 				factor[i] = float(numerator[i]/denominator[i])
 		return(factor)
-			
+
 	def dictionary_of_qa(self):
 		"""
 		Creates a dictionary of questions with all the responses
@@ -162,7 +178,7 @@ class Interpret:
 						if b not in dic_of_qa[q]:
 							dic_of_qa[q].append(b)
 		return(dic_of_qa)
-					
+
 	def bayesian_factors(self, file_name, reset=False):
 		"""
 		Creates file with all the factors for all combos of question answers
@@ -176,7 +192,7 @@ class Interpret:
 				#clean the keys up
 				a1 = self.key_formatting(a)
 				new_factors[q][a1] = self.bayesian_single_factor(q, a)
-		
+
 		#pickles info to a txt file
 		if exists(file_name) and reset == False:
 			return(load(open(file_name,'rb+')))
@@ -237,12 +253,3 @@ class Interpret:
 
 #data = Data('comma')
 #prior = [0.02777] * 36
-
-
-
-
-
-
-
-
-
