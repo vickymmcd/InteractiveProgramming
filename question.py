@@ -66,51 +66,28 @@ class Question():
 		self.question = Div(text=self.question_type)
 		#calls the appropriate layout class based on the options
 		if len(self.qa[self.index]) == 2:
-			Question.answer = RadioGroup(labels=[self.qa[self.index][0], self.qa[self.index][1]])
+			Question.answer = RadioGroup(labels=self.get_list_answers(2))
 			choices = widgetbox(self.question, Question.answer)
+			items = 2
 		elif len(self.qa[self.index]) == 5:
-			Question.answer = RadioGroup(labels=[self.qa[self.index][0],self.qa[self.index][1],self.qa[self.index][2], self.qa[self.index][3], self.qa[self.index][4]], active=0)
+			Question.answer = RadioGroup(labels=self.get_list_answers(5), active=0)
 			choices = widgetbox(self.question,Question.answer)
+			items = 5
 
-		return(choices)
+		return([choices, items])
 
 	def get_button(self):
 		button = vform(Question.next_button)
 		return(button)
 
+	def get_list_answers(self, items):
+		list_answers = []
+		for i in range(items):
+			list_answers.append(self.interpret.key_formatting(self.qa[self.index][i]))
+		return(list_answers)
 
-class Two_choices():
-	"""
-	Class for questions with 2 possible answers
-	"""
-	def __init__(self, question, answers):
-		self.question = question
-		self.answers = answers
 
-	def layout(self):
-		"""
-		Specifies the layout
-		"""
-		
-		answers = RadioGroup(labels=[self.answers[0], self.answers[1]], active=0)
-		widget = widgetbox(question,answers, self.next_button)
-		return(widget)
 
-class Five_choices():
-	"""
-	Class for questions with 5 possible answers
-	"""
-	def __init__(self, question, answers):
-		self.question = question
-		self.answers = answers
-
-	def layout(self):
-		"""
-		Specifies the layout
-		"""
-		self.answer = RadioGroup(labels=[self.answers[0], self.answers[1],self.answers[2], self.answers[3], self.answers[4]], active=0)
-		widget = widgetbox(self.question,self.answer, self.next_button)
-		return(widget)
 
 """
 data = Data('comma')
