@@ -11,6 +11,7 @@ from interpret import Interpret
 from data import Data
 from scaleline import ScaleLine
 from bokeh.plotting import output_file, show
+from bokeh.io import curdoc
 
 
 class Layout:
@@ -30,15 +31,14 @@ class Layout:
         output_file('layout.html')
         show(self.layout)
 
+    def get_layout(self):
+        curdoc().add_root(self.layout)
+        return self.layout
 
-if __name__ == '__main__':
-    data = Data('comma')
-    prior = [0.02777] * 36
-    '''newdictionary1 = Interpret(data, prior, 2, "No", "comma",
-                               [.25, .25, .25, .25], [0, .11, .11, .11, .11,
-                                                      .11, .11, .11, .11, .11])
-    layout = Layout(1, newdictionary1, "comma", data)'''
-    newdictionary1 = Interpret(data, prior, 2, "No", "comma")
-    layout = Layout(1, newdictionary1, "comma", data, [.25, .25, .25, .25],
-                    [0, .11, .11, .11, .11, .11, .11, .11, .11, .11])
-    layout.show_layout()
+
+data = Data('comma')
+prior = [0.02777] * 36
+newdictionary1 = Interpret(data, prior, 2, "No", "comma")
+layout = Layout(1, newdictionary1, "comma", data, [.25, .25, .25, .25],
+                [0, .11, .11, .11, .11, .11, .11, .11, .11, .11])
+layout.get_layout()
