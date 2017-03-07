@@ -7,13 +7,14 @@ from bokeh.io import output_file, show, vform
 from bokeh.layouts import widgetbox
 from bokeh.models.widgets import RadioGroup
 from bokeh.models.widgets import Div
-from bokeh.models.widgets import Toggle
+from bokeh.models.widgets import Button
 
 class Question():
 	"""
 	Class creates the layout for each question
 	"""
-	next_button= Toggle(label="Next", button_type="success")
+	next_button= Button(label="Next", button_type="success")
+	answer = RadioGroup(labels=['dfd', 'dfd'], active=0)
 	def __init__(self,index, interpret, data_type, data):
 		#differentiates between earthquake and comma
 		self.data_type = data_type
@@ -26,7 +27,7 @@ class Question():
 
 		#self.next_button = Toggle(label="Next", button_type="success")
 		self.question = Div(text="example")
-		self.answer = RadioGroup(labels=['dfd', 'dfd'], active=0)
+		
 
 		self.question_type = data.get_question(self.index)
 		#for the sake of simplicity and time, writing the questions down saves time
@@ -65,11 +66,11 @@ class Question():
 		self.question = Div(text=self.question_type)
 		#calls the appropriate layout class based on the options
 		if len(self.qa[self.index]) == 2:
-			self.answer = RadioGroup(labels=[self.qa[self.index][0], self.qa[self.index][1]], active=0)
-			choices = widgetbox(self.question,self.answer)
+			Question.answer = RadioGroup(labels=[self.qa[self.index][0], self.qa[self.index][1]])
+			choices = widgetbox(self.question, Question.answer)
 		elif len(self.qa[self.index]) == 5:
-			self.answer = RadioGroup(labels=[self.qa[self.index][0],self.qa[self.index][1],self.qa[self.index][2], self.qa[self.index][3], self.qa[self.index][4]], active=0)
-			choices = widgetbox(self.question,self.answer)
+			Question.answer = RadioGroup(labels=[self.qa[self.index][0],self.qa[self.index][1],self.qa[self.index][2], self.qa[self.index][3], self.qa[self.index][4]], active=0)
+			choices = widgetbox(self.question,Question.answer)
 
 		return(choices)
 
@@ -114,7 +115,7 @@ class Five_choices():
 """
 data = Data('comma')
 prior = [0.02777] * 36
-newdictionary1 = Interpret(data, prior, 2, "No", "comma")
+newdictionary1 = Interpret(prior, 2, "No", "comma")
 question = Question(1, newdictionary1, "comma")
 widget = question.return_layout()
 output_file('layout1.html')

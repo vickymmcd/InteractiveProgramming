@@ -108,3 +108,4 @@ prior = [3] * 36
 newdictionary1 = Interpret(data, prior, 2, "No", "comma")
 layout = Layout(1, newdictionary1, "comma", data)
 layout.get_layout()
+
