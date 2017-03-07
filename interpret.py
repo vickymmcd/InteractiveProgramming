@@ -10,11 +10,14 @@ from pickle import dump, load
 import sys
 
 class Interpret:
-	def __init__(self, data, prior, question, answer, data_type):
+	def __init__(self, prior, question, answer, data_type):
 		# differentiates between a comma or earthquake data set
 		self.data_type = data_type
-		# Data object
-		self.data = data
+		if self.data_type == "comma":
+			self.data = Data('comma')
+		elif self.data_type == "earthquake":
+			self.data = Data('earthquake')
+
 		# prior probabilities
 		self.prior = prior
 		# question index

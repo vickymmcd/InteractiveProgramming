@@ -42,3 +42,4 @@ newdictionary1 = Interpret(data, prior, 2, "No", "comma")
 layout = Layout(1, newdictionary1, "comma", data, [.25, .25, .25, .25],
                 [0, .11, .11, .11, .11, .11, .11, .11, .11, .11])
 layout.get_layout()
+
