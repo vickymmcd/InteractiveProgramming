@@ -54,8 +54,8 @@ class Layout:
     def update(self):
         self.update_stuff(3, 'Some', 'comma')
 
-    def change_layout(self, new_question_index, new_data, new_data_type):
-        self.question = Question(new_question_index, self.interpret, new_data_type, new_data)
+    def change_layout(self, new_question_index,interpret, new_data, new_data_type):
+        self.question = Question(new_question_index, interpret, new_data_type, new_data)
         self.layout.children[1] = self.question.get_fig()[0]
 
     def update_stuff(self, ques_num, response, data_type):

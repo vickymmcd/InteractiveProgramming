@@ -17,47 +17,36 @@ class Integration():
 
 	def __init__(self):
 		self.data_type = 'comma'
-		self.index = 5
+		self.index = 1
 		self.layout = Layout(self.index, Interpret([0.02777] * 36, 2, "No", "comma"), self.data_type, Data('comma'))
 		self.question = Question(self.index, Interpret([0.02777] * 36, 2, "No", "comma"), self.data_type, Data(self.data_type))
 		self.interpret = Interpret([0.02777] * 36, 2, "No", "comma")
 		
-		self.counter = 0
+		self.counter = 1
 
 	def update_layout(self, new):
 		answers = self.question.get_list_answers(self.question.get_fig()[1])
 		response = answers[new]
 		print(Question.question.text, response)
 
-
 		self.index += 1
-		if self.data_type == 'comma' and self.index < 9:
-			self.layout.change_layout(self.index, Data(self.data_type), self.data_type)
+		if self.data_type == 'comma' and self.index < 11:
+			self.layout.change_layout(self.index, self.interpret, Data(self.data_type), self.data_type)
 			self.counter += 1
-		
-		elif self.data_type == 'comma':
+		elif self.data_type == 'comma' and self.index == 11:
 			self.data_type = 'earthquake'
-			self.index = 0
-			self.layout.change_layout(self.index, Data(self.data_type), self.data_type)
+			self.interpret = Interpret([0.02777] * 36, 0, "Not at all worried", self.data_type)
+			self.index = 1
+			self.layout.change_layout(self.index, self.interpret, Data(self.data_type), self.data_type)
+			self.counter += 1
+		elif self.data_type == 'earthquake' and self.index < 7:
+			self.layout.change_layout(self.index, self.interpret, Data(self.data_type), self.data_type)
 			self.counter += 1
 
-		elif self.data_type == 'earthquake' and self.index < 8:
-			self.layout.change_layout(self.index, Data(self.data_type), self.data_type)
-			self.counter += 1
-
-
+		print(self.data_type)
 		self.question = Question(self.index, self.interpret, self.data_type, Data(self.data_type))
 		self.run_until_end()
-		#print(Data('comma').get_question(self.index))
-		"""
-		layout = self.layout.return_layout()
-		new_layout = row(layout.children[0], layout.children[1])
-		curdoc().clear()
-		#layout.children[1] = self.question.get_fig()[0]
-		curdoc().add_root(new_layout)
-		#self.layout.show_layout()
-		"""
-		#print(response, self.index)
+
 
 	def define_initial_layout(self):
 		self.layout.get_layout()
@@ -65,7 +54,8 @@ class Integration():
 		Question.answer.on_click(self.update_layout)
 
 	def run_until_end(self):
-		if self.counter < 10:
+		if self.counter < 16:
+			print(self.counter)
 			Question.answer.on_click(self.update_layout)
 		
 		
