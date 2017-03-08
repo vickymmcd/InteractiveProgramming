@@ -13,6 +13,7 @@ from scaleline import ScaleLine
 from bokeh.plotting import output_file, show
 from bokeh.io import curdoc
 from decimal import *
+from bokeh.client import push_session
 
 
 class Layout:
@@ -22,9 +23,9 @@ class Layout:
         self.scaleline = ScaleLine()
         self.question_index = question_index
         self.data_type = data_type
-        self.question = Question(question_index, interpret, data, data_type)
-        self.possible_answers = self.question.get_list_answers
-        (self.question.get_fig()[1])
+        self.interpret = interpret
+        self.question = Question(question_index, self.interpret, data,
+                                 data_type)
         self.priors = [3] * 36
         self.region_probs = [0, 11, 11, 11, 11, 11, 11, 11, 11, 11]
         self.region_names = ['Unknown', 'East North Central',
@@ -38,19 +39,17 @@ class Layout:
         self.layout = row(column(self.map.get_fig(self.region_probs),
                                  self.ageline.get_fig(self.age_probs),
                                  self.scaleline.get_fig()),
-                          column(self.question.get_fig()[0],
-                                 self.question.get_button()))
+                          column(self.question.get_fig()[0]))
 
     def show_layout(self):
         output_file('layout.html')
         show(self.layout)
 
-    def show_list_answers(self):
-        return([self.possible_answers, self.question_index])
+    def return_layout(self):
+        return(self.layout)
 
     def get_layout(self):
         curdoc().add_root(self.layout)
-        return self.layout
 
     def update(self):
         self.update_stuff(3, 'Some', 'comma')
@@ -61,8 +60,12 @@ class Layout:
                            self.scaleline.get_fig())
         self.layout.children[0] = self.pics
 
+    def change_layout(self, new_question_index, new_data, new_data_type):
+        self.question = Question(new_question_index, self.interpret,
+                                 new_data_type, new_data)
+        self.layout.children[1] = self.question.get_fig()[0]
+
     def update_stuff(self, ques_num, response, data_type):
-        data = Data(data_type)
         interpret = Interpret(self.priors, ques_num, response, data_type)
         self.priors = interpret.bayesian_update()
         region1_probs = 0
@@ -119,6 +122,7 @@ class Layout:
                            self.ageline.get_fig(self.age_probs),
                            self.scaleline.get_fig())
         self.layout.children[0] = self.pics
+        return(self.layout)
 
 
 """
