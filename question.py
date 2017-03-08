@@ -13,8 +13,9 @@ class Question():
 	"""
 	Class creates the layout for each question
 	"""
-	next_button= Button(label="Next", button_type="success")
+	#next_button= Button(label="Next", button_type="success")
 	answer = RadioGroup(labels=['dfd', 'dfd'], active=0)
+	question = Div(text='dkfjd')
 	def __init__(self,index, interpret, data_type, data):
 		#differentiates between earthquake and comma
 		self.data_type = data_type
@@ -29,7 +30,7 @@ class Question():
 		self.question = Div(text="example")
 		
 
-		self.question_type = data.get_question(self.index)
+		self.question_typed_out = data.get_question(self.index)
 		#for the sake of simplicity and time, writing the questions down saves time
 		#but in the long term we would have to implement an automatic way of doing this
 		#list of comma questions
@@ -63,23 +64,27 @@ class Question():
 		elif self.data_type == "earthquake":
 			questions = self.earthquake_questions
 		"""
-		self.question = Div(text=self.question_type)
+		Question.question = Div(text=self.question_typed_out)
 		#calls the appropriate layout class based on the options
 		if len(self.qa[self.index]) == 2:
 			Question.answer = RadioGroup(labels=self.get_list_answers(2))
-			choices = widgetbox(self.question, Question.answer)
+			choices = widgetbox(Question.question, Question.answer)
 			items = 2
+		elif len(self.qa[self.index]) == 4:
+			Question.answer = RadioGroup(labels=self.get_list_answers(4))
+			choices = widgetbox(Question.question,Question.answer)
+			items = 4
 		elif len(self.qa[self.index]) == 5:
-			Question.answer = RadioGroup(labels=self.get_list_answers(5), active=0)
-			choices = widgetbox(self.question,Question.answer)
+			Question.answer = RadioGroup(labels=self.get_list_answers(5))
+			choices = widgetbox(Question.question,Question.answer)
 			items = 5
 
 		return([choices, items])
-
+	'''
 	def get_button(self):
 		button = vform(Question.next_button)
 		return(button)
-
+	'''
 	def get_list_answers(self, items):
 		list_answers = []
 		for i in range(items):

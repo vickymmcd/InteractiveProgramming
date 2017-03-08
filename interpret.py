@@ -175,7 +175,7 @@ class Interpret:
 					#for every answer to the question
 					for b in result:
 						#a1 = self.key_formatting(b)
-						if b not in dic_of_qa[q]:
+						if b not in dic_of_qa[q] and (b != ''):
 							dic_of_qa[q].append(b)
 		return(dic_of_qa)
 
