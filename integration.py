@@ -45,7 +45,7 @@ class Integration():
 			self.index = 1
 			self.layout.change_layout(self.index, self.interpret, Data(self.data_type), self.data_type)
 			self.counter += 1
-		elif self.data_type == 'earthquake' and self.index < 7:
+		elif self.data_type == 'earthquake' and self.index < 8:
 			self.layout.change_layout(self.index, self.interpret, Data(self.data_type), self.data_type)
 			self.counter += 1
 

@@ -40,30 +40,26 @@ class AgeLine:
         self.initialprobs = [25, 25, 25, 25]
         self.hover = HoverTool(tooltips=[('Age', '@age'),
                                          ('Probability', '@probs')])
-        self.figure = figure(title='Your Age', plot_height=200, plot_width=700,
-                             tools=[self.hover, 'pan', 'wheel_zoom'],
-                             x_axis_label='Age')
+        self.figure1 = figure(title='Your Age', plot_height=200,
+                              plot_width=700,
+                              tools=[self.hover, 'pan', 'wheel_zoom'],
+                              x_axis_label='Age')
         self.source1 = ColumnDataSource(data={'x_coords': self.x_coords,
-                                             'y_coords': self.y_coords,
-                                             'probs': self.initialprobs,
-                                             'age': ['18-29', '30-44', '45-59',
-                                                     '60+']})
-        self.figure.patches(self.x_coords, self.y_coords, source=self.source1,
-                            line_color='red', color={'field': 'probs',
-                                                     'transform': self.mapper})
+                                              'y_coords': self.y_coords,
+                                              'probs': self.initialprobs,
+                                              'age': ['18-29', '30-44',
+                                                      '45-59', '60+']})
+        self.figure1.patches(self.x_coords, self.y_coords, source=self.source1,
+                             line_color='red', color={'field': 'probs',
+                                                      'transform':
+                                                      self.mapper})
 
     def get_fig(self, probs):
-        return self.figure
+        return self.figure1
 
     def update_ageline(self, probs=[]):
-        self.source1.data = {'x_coords': self.x_coords,
-                            'y_coords': self.y_coords,
-                            'probs': probs,
-                            'age': ['18-29', '30-44', '45-59',
-                                    '60+']}
-        self.figure.patches(self.x_coords, self.y_coords, source=self.source1,
-                            line_color='red', color={'field': 'probs',
-                                                     'transform': self.mapper})
+        self.source1.data['probs'] = probs
+        print('ageline updated')
 
     def show_the_ageline(self):
         self.update_ageline([.25, .25, .25, .25])

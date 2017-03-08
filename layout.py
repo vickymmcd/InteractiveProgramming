@@ -113,7 +113,7 @@ class Layout:
                              region7_probs, region8_probs, region9_probs]
         self.age_probs = [age1_probs, age2_probs, age3_probs, age4_probs]
         self.map.update_map(self.region_probs)
-        #self.ageline.update_ageline(self.age_probs)
+        self.ageline.update_ageline(self.age_probs)
 
 
 """

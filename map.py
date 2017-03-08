@@ -89,14 +89,8 @@ class Map:
         for region in self.regions:
             state_probs.append(probs[region])
             state_regions.append(self.region_names[region])
-        self.source.data = {'x_coords': self.x_coords,
-                            'y_coords': self.y_coords,
-                            'region_num': self.regions,
-                            'probability': state_probs,
-                            'region_name': state_regions}
-        self.figure.patches(self.x_coords, self.y_coords, source=self.source,
-                            line_color='red', color={'field': 'probability',
-                                                     'transform': self.mapper})
+        self.source.data['probability'] = state_probs
+        print('map updated')
 
     def show_the_map(self):
         self.update_map([100, 0, 40, 50, 70, 90, 100, 0, 30, 40])
