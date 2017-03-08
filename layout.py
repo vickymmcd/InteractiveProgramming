@@ -54,16 +54,14 @@ class Layout:
     def update(self):
         self.update_stuff(3, 'Some', 'comma')
 
-    def change_pictures(self):
-        self.pics = column(self.map.get_fig(self.region_probs),
-                           self.ageline.get_fig(self.age_probs),
-                           self.scaleline.get_fig())
-        self.layout.children[0] = self.pics
-
     def change_layout(self, new_question_index, new_data, new_data_type):
         self.question = Question(new_question_index, self.interpret,
                                  new_data_type, new_data)
-        self.layout.children[1] = self.question.get_fig()[0]
+        self.pics = column(self.map.get_fig(self.region_probs),
+                           self.ageline.get_fig(self.age_probs),
+                           self.scaleline.get_fig())
+        self.layout.children = [self.pics, self.question.get_fig()[0]]
+        print('Done!')
 
     def update_stuff(self, ques_num, response, data_type):
         interpret = Interpret(self.priors, ques_num, response, data_type)
@@ -113,16 +111,7 @@ class Layout:
                              region7_probs, region8_probs, region9_probs]
         self.age_probs = [age1_probs, age2_probs, age3_probs, age4_probs]
         self.map.update_map(self.region_probs)
-        print('region probs')
-        print(self.region_probs)
         self.ageline.update_ageline(self.age_probs)
-        print('age probs')
-        print(self.age_probs)
-        self.pics = column(self.map.get_fig(self.region_probs),
-                           self.ageline.get_fig(self.age_probs),
-                           self.scaleline.get_fig())
-        self.layout.children[0] = self.pics
-        return(self.layout)
 
 
 """

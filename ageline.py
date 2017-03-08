@@ -61,6 +61,9 @@ class AgeLine:
                             'probs': probs,
                             'age': ['18-29', '30-44', '45-59',
                                     '60+']}
+        self.figure.patches(self.x_coords, self.y_coords, source=self.source,
+                            line_color='red', color={'field': 'probs',
+                                                     'transform': self.mapper})
 
     def show_the_ageline(self):
         self.update_ageline([.25, .25, .25, .25])

@@ -13,13 +13,18 @@ from bokeh.models.widgets import Toggle
 from bokeh.plotting import figure, curdoc
 from bokeh.layouts import column, row
 
+
 class Integration():
 
 	def __init__(self):
 		self.data_type = 'comma'
 		self.index = 5
-		self.layout = Layout(self.index, Interpret([0.02777] * 36, 2, "No", "comma"), self.data_type, Data('comma'))
-		self.question = Question(self.index, Interpret([0.02777] * 36, 2, "No", "comma"), self.data_type, Data(self.data_type))
+		self.layout = Layout(self.index,
+							 Interpret([0.02777] * 36, 2, "No", "comma"),
+							 self.data_type, Data('comma'))
+		self.question = Question(self.index,
+								 Interpret([0.02777] * 36, 2, "No", "comma"),
+								 self.data_type, Data(self.data_type))
 		self.interpret = Interpret([0.02777] * 36, 2, "No", "comma")
 		self.counter = 0
 
@@ -46,7 +51,7 @@ class Integration():
 
 		self.question = Question(self.index, self.interpret, self.data_type, Data(self.data_type))
 		self.run_until_end()
-		#print(Data('comma').get_question(self.index))
+		# print(Data('comma').get_question(self.index))
 
 	def define_initial_layout(self):
 		self.layout.get_layout()
