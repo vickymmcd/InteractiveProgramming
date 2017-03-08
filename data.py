@@ -108,7 +108,6 @@ class Data:
         Sorts the data by questions and numbers of answers for
         each age/location
         """
-        print(self.type)
         if self.type == 'earthquake':
             file_name = 'earthquake_dict.pickle'
         elif self.type == 'comma':

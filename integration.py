@@ -19,19 +19,20 @@ class Integration():
 		self.layout = Layout(1, Interpret([0.02777] * 36, 2, "No", "comma"), self.data_type, Data('comma'))
 
 	def update_layout(self, new):
-		answers = self.layout.show_list_answers()[0]
+		answers = self.layout.show_list_answers()
+		answers = answers[0]
+		print('hello there')
 		question_index = self.layout.show_list_answers()[1]
-		response = answers[new]
-		self.layout.update_stuff(question_index, answers[new], self.data_type)
-		print(response, question_index)
+		print('hello there2')
+		print('hello there3')
+		self.layout.update_stuff(1, "It's important for a person to be honest, kind and loyal.", self.data_type)
 
 	def define_layout(self):
 		self.layout.get_layout()
 		self.layout.show_layout()
 		Question.answer.on_click(self.update_layout)
-		
-		
+
+
 
 integrate = Integration()
 integrate.define_layout()
-

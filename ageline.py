@@ -37,26 +37,30 @@ class AgeLine:
                                                       100],
                                              palette=bokeh.palettes.
                                              magma(101))
+        self.initialprobs = [25, 25, 25, 25]
         self.hover = HoverTool(tooltips=[('Age', '@age'),
                                          ('Probability', '@probs')])
         self.figure = figure(title='Your Age', plot_height=200, plot_width=700,
                              tools=[self.hover, 'pan', 'wheel_zoom'],
                              x_axis_label='Age')
-
-    def get_fig(self, probs):
-        self.probs = probs
-        self.update_ageline(probs)
-        return self.figure
-
-    def update_ageline(self, probs=[]):
         self.source = ColumnDataSource(data={'x_coords': self.x_coords,
                                              'y_coords': self.y_coords,
-                                             'probs': probs,
+                                             'probs': self.initialprobs,
                                              'age': ['18-29', '30-44', '45-59',
                                                      '60+']})
         self.figure.patches(self.x_coords, self.y_coords, source=self.source,
                             line_color='red', color={'field': 'probs',
                                                      'transform': self.mapper})
+
+    def get_fig(self, probs):
+        return self.figure
+
+    def update_ageline(self, probs=[]):
+        self.source.data = {'x_coords': self.x_coords,
+                            'y_coords': self.y_coords,
+                            'probs': probs,
+                            'age': ['18-29', '30-44', '45-59',
+                                    '60+']}
 
     def show_the_ageline(self):
         self.update_ageline([.25, .25, .25, .25])

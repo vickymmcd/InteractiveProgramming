@@ -23,7 +23,8 @@ class Layout:
         self.question_index = question_index
         self.data_type = data_type
         self.question = Question(question_index, interpret, data, data_type)
-        self.possible_answers = self.question.get_list_answers(self.question.get_fig()[1])
+        self.possible_answers = self.question.get_list_answers
+        (self.question.get_fig()[1])
         self.priors = [3] * 36
         self.region_probs = [0, 11, 11, 11, 11, 11, 11, 11, 11, 11]
         self.region_names = ['Unknown', 'East North Central',
@@ -53,6 +54,12 @@ class Layout:
 
     def update(self):
         self.update_stuff(3, 'Some', 'comma')
+
+    def change_pictures(self):
+        self.pics = column(self.map.get_fig(self.region_probs),
+                           self.ageline.get_fig(self.age_probs),
+                           self.scaleline.get_fig())
+        self.layout.children[0] = self.pics
 
     def update_stuff(self, ques_num, response, data_type):
         data = Data(data_type)
@@ -102,13 +109,16 @@ class Layout:
                              region4_probs, region5_probs, region6_probs,
                              region7_probs, region8_probs, region9_probs]
         self.age_probs = [age1_probs, age2_probs, age3_probs, age4_probs]
-        self.layout = row(column(self.map.get_fig(self.region_probs),
-                                 self.ageline.get_fig(self.age_probs),
-                                 self.scaleline.get_fig()),
-                          column(self.question.get_fig()[0],
-                                 self.question.get_button()))
         self.map.update_map(self.region_probs)
+        print('region probs')
+        print(self.region_probs)
         self.ageline.update_ageline(self.age_probs)
+        print('age probs')
+        print(self.age_probs)
+        self.pics = column(self.map.get_fig(self.region_probs),
+                           self.ageline.get_fig(self.age_probs),
+                           self.scaleline.get_fig())
+        self.layout.children[0] = self.pics
 
 
 """
@@ -118,4 +128,3 @@ newdictionary1 = Interpret(data, prior, 2, "No", "comma")
 layout = Layout(1, newdictionary1, "comma", data)
 layout.get_layout()
 """
-
