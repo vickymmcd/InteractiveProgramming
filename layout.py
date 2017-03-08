@@ -100,7 +100,7 @@ class Layout:
                 region8_probs += int(self.priors[i] * 100)
             elif interpret.get_location(i) == self.region_names[9]:
                 region9_probs += int(self.priors[i] * 100)
-            if interpret.get_age(i) == self.priors[0]:
+            if interpret.get_age(i) == self.age_names[0]:
                 age1_probs += int(self.priors[i] * 100)
             elif interpret.get_age(i) == self.age_names[1]:
                 age2_probs += int(self.priors[i] * 100)

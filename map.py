@@ -39,7 +39,7 @@ class Map:
                                                       95, 96, 97, 98, 99,
                                                       100],
                                              palette=bokeh.palettes.
-                                             magma(101))
+                                             viridis(101))
         self.sf = shapefile.Reader("StateBorders/cb_2015_us_state_5m.shp")
         self.shapes = self.sf.shapes()
         for i, shape in enumerate(self.shapes):

@@ -18,7 +18,7 @@ class Integration():
 
 	def __init__(self):
 		self.data_type = 'comma'
-		self.index = 2
+		self.index = 1
 		self.layout = Layout(self.index,
 							 Interpret([0.02777] * 36, 2, "No", "comma"),
 							 self.data_type, Data('comma'))
@@ -26,7 +26,7 @@ class Integration():
 								 Interpret([0.02777] * 36, 2, "No", "comma"),
 								 self.data_type, Data(self.data_type))
 		self.interpret = Interpret([0.02777] * 36, 2, "No", "comma")
-		self.counter = 2
+		self.counter = 1
 
 
 	def update_layout(self, new):
