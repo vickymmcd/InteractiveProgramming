@@ -11,6 +11,13 @@ import sys
 
 class Interpret:
 	def __init__(self, prior, question, answer, data_type):
+		'''
+		Based on the answer to a question, updates the probability that someone is from
+		a certain area
+
+		Attributes: data_type, data, prior, question_index, answer, 
+			question_list, age_list, location_list
+		'''
 		# differentiates between a comma or earthquake data set
 		self.data_type = data_type
 		if self.data_type == "comma":
@@ -38,9 +45,9 @@ class Interpret:
 			'Mountain', 'New England', 'Pacific', 'South Atlantic', 'West North Central', 'West South Central']
 
 	def key_creator(self):
-		"""
+		'''
 		Creates the location-age keys for the final output of new posterior probabilities
-		"""
+		'''
 		key_list = []
 		for i in self.location_list:
 			for j in self.age_list:
@@ -65,6 +72,9 @@ class Interpret:
 		return my_key[1]
 
 	def key_formatting(self, a):
+		'''
+		Gets rid of the odd formatting from the pickle file
+		'''
 		if self.data_type == 'earthquake':
 			if a == '"Yes, one or more minor ones"':
 				a1 = 'Yes, one or more minor ones'
@@ -97,10 +107,11 @@ class Interpret:
 		return(a1)
 
 	def denominator_factor(self, question, answer):
-		"""
+		'''
 		Finds the total number of people for each hypothesis (location - age combo)
 		who answered a question
-		"""
+		'''
+
 		denominator = {}
 		value = 0
 		for i in self.location_list:
@@ -111,7 +122,7 @@ class Interpret:
 				#who answered each answer
 				result = self.data.get_data(i, j, question)
 				for a1 in result:
-					#a1 = self.key_formatting(a)
+			
 					# go through all the # of answers to a question and add them to one variable
 					value += result[a1]
 				#key is location-age, value is the total # of answers to a question
@@ -120,9 +131,9 @@ class Interpret:
 		return(denominator)
 
 	def numerator_factor(self, question, a):
-		"""
+		'''
 		Finds the number of people for each hypothesis (location - age combo) and each answer to a question
-		"""
+		'''
 		factor = {}
 		for i in self.location_list:
 			for j in self.age_list:
@@ -141,13 +152,13 @@ class Interpret:
 		return(factor)
 
 	def bayesian_single_factor(self, question, answer):
-		"""
+		'''
 		Given a piece of data (question and answer), create dictionary with corresponding
 		P(D|H)
 		H: string of location + age
 		ie: 'East North Central; 18 - 29'
 		Creates a dictionary for each specific question answer combo
-		"""
+		'''
 		denominator = self.denominator_factor(question, answer)
 
 		numerator = self.numerator_factor(question, answer)
@@ -159,9 +170,9 @@ class Interpret:
 		return(factor)
 
 	def dictionary_of_qa(self):
-		"""
+		'''
 		Creates a dictionary of questions with all the responses
-		"""
+		'''
 		dic_of_qa = {}
 
 		for l in self.location_list:
@@ -180,9 +191,9 @@ class Interpret:
 		return(dic_of_qa)
 
 	def bayesian_factors(self, file_name, reset=False):
-		"""
+		'''
 		Creates file with all the factors for all combos of question answers
-		"""
+		'''
 		prev_factors = self.dictionary_of_qa()
 		new_factors = {}
 		for q in prev_factors:
@@ -203,9 +214,9 @@ class Interpret:
 			return(load(open(file_name, 'rb')))
 
 	def bayesian_update(self):
-		"""
+		'''
 		Updates a prior probabilities with posterior probabilities using Bayesian
-		"""
+		'''
 		if self.data_type == 'comma':
 			#self.bayesian_factors('comma_factors.txt')
 			factors = load(open('comma_factors.txt', 'rb+'))
@@ -241,9 +252,9 @@ class Interpret:
 		return(posterior)
 
 	def biggest_probability(self):
-		"""
+		'''
 		Finds the biggest probability someone has of being from somewhere
-		"""
+		'''
 		posterior = self.bayesian_update()
 		maximum = max(posterior)
 		index = posterior.index(maximum)

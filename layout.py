@@ -18,6 +18,13 @@ from bokeh.client import push_session
 
 class Layout:
     def __init__(self, question_index, interpret, data, data_type):
+        '''
+        Gathers the Map, AgeLine, ScaleLine, Question class layouts
+        and combines them onto one document
+
+        Attributes: map, ageline, scaleline, question, priors, 
+            region_probs, region_names, age_names, age_probs, layout
+        '''
         self.map = Map()
         self.ageline = AgeLine()
         self.scaleline = ScaleLine()
@@ -32,7 +39,7 @@ class Layout:
                              'West South Central']
         self.age_names = [' 18 - 29', ' 30 - 44', ' 45 - 59', ' 60']
         self.age_probs = [25, 25, 25, 25]
-        # self.update()
+
         self.layout = row(column(self.map.get_fig(self.region_probs),
                                  self.ageline.get_fig(self.age_probs),
                                  self.scaleline.get_fig()),
@@ -40,14 +47,23 @@ class Layout:
 
 
     def get_layout(self):
+        '''
+        Creates the document and adds the layout to it
+        '''
         curdoc().add_root(self.layout)
 
     def change_layout(self, new_question_index, interpret, new_data, new_data_type):
+        '''
+        Changes the question child based on the new question by accessing the question object
+        '''
         self.question = Question(new_question_index, interpret,
                                  new_data_type, new_data)
         self.layout.children[1] = self.question.get_fig()[0]
 
     def final_layout(self, new_fig):
+        '''
+        This makes the final layout
+        '''
         self.layout.children[1] = new_fig
 
     def update_visuals(self, ques_num, response, data_type):
@@ -101,6 +117,9 @@ class Layout:
         self.ageline.update_ageline(self.age_probs)
 
     def biggest_prob(self):
+        '''
+        For the final message, find the str version of the highest probability information
+        '''
         biggest_age_prob = max(self.age_probs)
         age_index = self.age_probs.index(biggest_age_prob)
         biggest_age = self.age_names[age_index]
