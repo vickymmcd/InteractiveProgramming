@@ -9,16 +9,16 @@ from data import Data
 from layout import Layout
 from scaleline import ScaleLine
 from bokeh.models import Button
-from bokeh.models.widgets import Toggle
+from bokeh.models.widgets import Toggle, Div
 from bokeh.plotting import figure, curdoc
-from bokeh.layouts import column, row
+from bokeh.layouts import column, row, widgetbox
 
 
 class Integration():
 
 	def __init__(self):
 		self.data_type = 'comma'
-		self.index = 2
+		self.index = 10
 		self.layout = Layout(self.index,
 							 Interpret([0.02777] * 36, 2, "No", "comma"),
 							 self.data_type, Data('comma'))
@@ -26,7 +26,7 @@ class Integration():
 								 Interpret([0.02777] * 36, 2, "No", "comma"),
 								 self.data_type, Data(self.data_type))
 		self.interpret = Interpret([0.02777] * 36, 2, "No", "comma")
-		self.counter = 2
+		self.counter = 10
 
 
 	def update_layout(self, new):
@@ -59,9 +59,13 @@ class Integration():
 		Question.answer.on_click(self.update_layout)
 
 	def run_until_end(self):
-		if self.counter < 16:
+		if self.counter < 17:
 			print(self.counter)
 			Question.answer.on_click(self.update_layout)
+		else:
+			final_blurb = Div(text='You are most likely to be '+ self.layout.biggest_prob() + ' region.')
+			new_layout = widgetbox(final_blurb)
+			self.layout.final_layout(new_layout)
 
 
 integrate = Integration()

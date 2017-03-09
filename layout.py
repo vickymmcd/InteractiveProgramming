@@ -65,6 +65,9 @@ class Layout:
         self.layout.children[1] = self.question.get_fig()[0]
         print('Done!')
 
+    def final_layout(self, new_fig):
+        self.layout.children[1] = new_fig
+
     def update_stuff(self, ques_num, response, data_type):
         interpret = Interpret(self.priors, ques_num, response, data_type)
         self.priors = interpret.bayesian_update()
@@ -100,7 +103,7 @@ class Layout:
                 region8_probs += int(self.priors[i] * 100)
             elif interpret.get_location(i) == self.region_names[9]:
                 region9_probs += int(self.priors[i] * 100)
-            if interpret.get_age(i) == self.priors[0]:
+            if interpret.get_age(i) == self.age_names[0]:
                 age1_probs += int(self.priors[i] * 100)
             elif interpret.get_age(i) == self.age_names[1]:
                 age2_probs += int(self.priors[i] * 100)
@@ -114,6 +117,16 @@ class Layout:
         self.age_probs = [age1_probs, age2_probs, age3_probs, age4_probs]
         self.map.update_map(self.region_probs)
         self.ageline.update_ageline(self.age_probs)
+
+    def biggest_prob(self):
+        biggest_age_prob = max(self.age_probs)
+        age_index = self.age_probs.index(biggest_age_prob)
+        biggest_age = self.age_names[age_index]
+        biggest_loc_prob = max(self.region_probs)
+        loc_index = self.region_probs.index(biggest_loc_prob)
+        biggest_loc = self.region_names[loc_index]
+        biggest_prob = str(biggest_age) + ' years old and from the ' + str(biggest_loc) 
+        return(biggest_prob)
 
 
 """

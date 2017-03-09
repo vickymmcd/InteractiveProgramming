@@ -137,7 +137,7 @@ class Interpret:
 					factor[key] = value
 				else:
 					#if nobody answered with that response, then make it 0
-					factor[key] = 0.5
+					factor[key] = 1
 		return(factor)
 
 	def bayesian_single_factor(self, question, answer):
