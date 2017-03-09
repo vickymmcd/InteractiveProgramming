@@ -59,11 +59,11 @@ class Map:
                              'Mountain', 'New England', 'Pacific',
                              'South Atlantic', 'West North Central',
                              'West South Central']
-        self.initialprobs = [0, 11, 11, 11, 11, 11, 11, 11, 11, 11]
+        self.initial_probs = [0, 11, 11, 11, 11, 11, 11, 11, 11, 11]
         state_probs = []
         state_regions = []
         for region in self.regions:
-            state_probs.append(self.initialprobs[region])
+            state_probs.append(self.initial_probs[region])
             state_regions.append(self.region_names[region])
         print(state_probs)
         self.source = ColumnDataSource(data={'x_coords': self.x_coords,
@@ -92,12 +92,7 @@ class Map:
         self.source.data['probability'] = state_probs
         print('map updated')
 
-    def show_the_map(self):
-        self.update_map([100, 0, 40, 50, 70, 90, 100, 0, 30, 40])
-        output_file('map.html')
-        show(self.figure)
-
 
 if __name__ == '__main__':
     map = Map()
-    # map.show_the_map()
+

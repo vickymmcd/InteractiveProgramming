@@ -37,7 +37,7 @@ class AgeLine:
                                                       100],
                                              palette=bokeh.palettes.
                                              viridis(101))
-        self.initialprobs = [25, 25, 25, 25]
+        self.initial_probs = [25, 25, 25, 25]
         self.hover = HoverTool(tooltips=[('Age', '@age'),
                                          ('Probability', '@probs')])
         self.figure1 = figure(title='Your Age', plot_height=200,
@@ -46,7 +46,7 @@ class AgeLine:
                               x_axis_label='Age')
         self.source1 = ColumnDataSource(data={'x_coords': self.x_coords,
                                               'y_coords': self.y_coords,
-                                              'probs': self.initialprobs,
+                                              'probs': self.initial_probs,
                                               'age': ['18-29', '30-44',
                                                       '45-59', '60+']})
         self.figure1.patches(self.x_coords, self.y_coords, source=self.source1,
@@ -61,12 +61,5 @@ class AgeLine:
         self.source1.data['probs'] = probs
         print('ageline updated')
 
-    def show_the_ageline(self):
-        self.update_ageline([.25, .25, .25, .25])
-        output_file('ageline.html')
-        show(self.figure)
-
-
 if __name__ == '__main__':
     age_line = AgeLine()
-    age_line.show_the_ageline()

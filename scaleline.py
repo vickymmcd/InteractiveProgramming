@@ -56,12 +56,6 @@ class ScaleLine:
         self.figure.patches(self.x_coords, self.y_coords, source=self.source,
                             color={'field': 'probs', 'transform': self.mapper})
 
-    def show_the_scaleline(self):
-        self.update_scaleline()
-        output_file('scaleline.html')
-        show(self.figure)
-
 
 if __name__ == '__main__':
     scale_line = ScaleLine()
-    scale_line.show_the_scaleline()

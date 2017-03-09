@@ -21,7 +21,7 @@ class Interpret:
 		# prior probabilities
 		self.prior = prior
 		# question index
-		self.question = question
+		self.question_index = question
 		# answer to the question
 		self.answer = answer
 
@@ -214,8 +214,8 @@ class Interpret:
 		list_of_factors = []
 		#index into the right question answer combo
 
-		for i in factors[self.question][self.answer]:
-			list_of_factors.append(factors[self.question][self.answer][i])
+		for i in factors[self.question_index][self.answer]:
+			list_of_factors.append(factors[self.question_index][self.answer][i])
 
 		product = []
 		j = 0
@@ -250,6 +250,3 @@ class Interpret:
 		key_list = self.key_creator()
 		return(key_list[index])
 
-
-#data = Data('comma')
-#prior = [0.02777] * 36

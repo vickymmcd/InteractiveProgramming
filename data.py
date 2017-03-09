@@ -9,7 +9,7 @@ import pickle
 
 
 class Data:
-    def __init__(self, type):
+    def __init__(self, data_type):
         '''
         This initializes the Data class and assigns it to a type.
         Type will either be earthquake or comma aligning with one
@@ -19,7 +19,7 @@ class Data:
         type: The type of data associated with the data object
         (earthquake or comma)
         '''
-        self.type = type
+        self.type = data_type
         if self.type == 'earthquake':
             f = open('earthquake_data.csv')
             self.lines = f.readlines()
@@ -141,7 +141,7 @@ class Data:
                 # Be sure to convert list for each question to freqdict
                     new_ans_list = []
                     for i in range(self.num_of_ques):
-                        new_ans = self.wordListToFreqDict(answers[i])
+                        new_ans = self.word_List_To_Freq_Dict(answers[i])
                         # Recreate your dictionary
                         new_ans_list.append(new_ans)
                 nested_dict[age] = new_ans_list
@@ -150,10 +150,10 @@ class Data:
         pickle.dump(best_dict, f)
         return best_dict
 
-    def wordListToFreqDict(self, wordlist):
+    def word_List_To_Freq_Dict(self, wordlist):
         '''Given a list of words, return a dictionary of
          word-frequency pairs.
-         >>> wordListToFreqDict(['hi', 'hi', 'hi'])
+         >>> word_List_To_Freq_Dict(['hi', 'hi', 'hi'])
          {'hi': 3}
          '''
         wordfreq = [wordlist.count(p) for p in wordlist]

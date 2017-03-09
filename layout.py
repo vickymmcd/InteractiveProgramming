@@ -21,10 +21,7 @@ class Layout:
         self.map = Map()
         self.ageline = AgeLine()
         self.scaleline = ScaleLine()
-        self.question_index = question_index
-        self.data_type = data_type
-        self.interpret = interpret
-        self.question = Question(question_index, self.interpret, data,
+        self.question = Question(question_index, interpret, data,
                                  data_type)
         self.priors = [3] * 36
         self.region_probs = [0, 11, 11, 11, 11, 11, 11, 11, 11, 11]
@@ -41,34 +38,19 @@ class Layout:
                                  self.scaleline.get_fig()),
                           column(self.question.get_fig()[0]))
 
-    def show_layout(self):
-        output_file('layout.html')
-        show(self.layout)
-
-    def return_layout(self):
-        return(self.layout)
 
     def get_layout(self):
         curdoc().add_root(self.layout)
 
-    def update(self):
-        self.update_stuff(3, 'Some', 'comma')
-
-
     def change_layout(self, new_question_index, interpret, new_data, new_data_type):
         self.question = Question(new_question_index, interpret,
                                  new_data_type, new_data)
-        #self.pics = column(self.map.get_fig(self.region_probs),
-                           #self.ageline.get_fig(self.age_probs),
-                           #self.scaleline.get_fig())
-        #self.layout.children[0] = self.pics
         self.layout.children[1] = self.question.get_fig()[0]
-        print('Done!')
 
     def final_layout(self, new_fig):
         self.layout.children[1] = new_fig
 
-    def update_stuff(self, ques_num, response, data_type):
+    def update_visuals(self, ques_num, response, data_type):
         interpret = Interpret(self.priors, ques_num, response, data_type)
         self.priors = interpret.bayesian_update()
         region1_probs = 0
@@ -128,11 +110,3 @@ class Layout:
         biggest_prob = str(biggest_age) + ' years old and from the ' + str(biggest_loc) 
         return(biggest_prob)
 
-
-"""
-data = Data('comma')
-prior = [3] * 36
-newdictionary1 = Interpret(data, prior, 2, "No", "comma")
-layout = Layout(1, newdictionary1, "comma", data)
-layout.get_layout()
-"""
