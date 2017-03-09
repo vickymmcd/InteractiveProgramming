@@ -3,7 +3,7 @@
 ## Introduction
 Emily Lepert and Vicky McDermott - Team McLepermott
 
-Link to Our Project Proposal: https://docs.google.com/document/d/1CpQTpCfJq66YQCzO2wIB3DNUCEnOozI62HELoHTwGbk/edit?usp=sharing
+Link to Our Project Proposal: https://github.com/vickymmcd/InteractiveProgramming/blob/master/docs/projectproposal.md
 
 Link to Our Project Writeup and Reflection: https://vickymmcd.github.io/InteractiveProgramming/
 
