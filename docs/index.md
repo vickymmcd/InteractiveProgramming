@@ -20,12 +20,12 @@ We had several people interact with our project and answer the questions. When t
 
 *This is a zoom in of an example question.*
 
-<img src="https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/FinalVisual.png" alt ="" />
+<img src="https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/FinalVisual1.png" alt ="" />
 *This is an example of the final visuals after all the questions have been run through.*
 
-<img src="https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/FinalStatement.png" alt ="" />
+<img src="https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/FinalStatement1.png" alt ="" />
 
-*This is an example of a final statement (note: this statement does not correlate to the result of the above visual).*
+*This is an example of a final statement.*
 
 ## Implementation
 From the two datasets, we gathered statistical information about the correlation between an answer to a question and the likelihood someone is from a location and is of a certain age. We used our knowledge of Bayesian statistics to update these probabilities after each question is answered. The questions serve as the controller which updates the model which is the probabilities of what we know about a person based on their answers to various questions. The model immediately updates the view being the pictures of the United States and the age line. The colors and hover titles change to represent the updated probabilities that a person is from a given location and age group based on their answer to the question.
