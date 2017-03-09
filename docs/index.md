@@ -13,14 +13,22 @@ We had several people interact with our project and answer the questions. When t
 <img src="https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/Screen%20Shot%202017-03-08%20at%208.13.55%20PM.png" alt ="" />
 *This is a zoom in of the map visualization with the hover tool.*
 
-
 <img src="https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/Screen%20Shot%202017-03-08%20at%208.14.06%20PM.png" alt ="" />
 *This is a zoom in of the age line visualization with the color scale line and hover tool.*
+
+<img src="https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/ExampleQuestion.png" alt ="" />
+*This is a zoom of an example question.*
+
+<img src="https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/FinalVisual.png" alt ="" />
+*This is an example of the final visuals after all the questions have been run through.*
+
+<img src="https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/FinalStatement.png" alt ="" />
+*This is an example of a final statement (note: this statement does not correlate to the result of the above visual).*
 
 ## Implementation
 From the two datasets, we gathered statistical information about the correlation between an answer to a question and the likelihood someone is from a location and is of a certain age. We used our knowledge of Bayesian statistics to update these probabilities after each question is answered. The questions serve as the controller which updates the model which is the probabilities of what we know about a person based on their answers to various questions. The model immediately updates the view being the pictures of the United States and the age line. The colors and hover titles change to represent the updated probabilities that a person is from a given location and age group based on their answer to the question.
 
-We implemented several classes all representing different pieces of our program. We have a Data class which represents the data files as we pulled them in from the internet. Inside the Data class we have methods which could organize the data in ways such that we could easily access and use various aspects of the data later in our project. We manipulate the data in our Interpret class which represented the model of our model view controller. We had four main view classes. One represented the map object, another the age line object, another a scale line representing the color scale, and lastly one to represent the layout of all these objects as whole. The Question class served as our controller, providing the user an outlet to input an answer to a question on the view and then sending that data to the model to update the view accordingly. Lastly, Integration is a class which communicates between our model, controller, and our view objects and coordinates between them. 
+We implemented several classes all representing different pieces of our program. We have a Data class which represents the data files as we pulled them in from the internet. Inside the Data class we have methods which could organize the data in ways such that we could easily access and use various aspects of the data later in our project. We manipulate the data in our Interpret class which represented the model of our model view controller. We had four main view classes. One represented the map object, another the age line object, another a scale line representing the color scale, and lastly one to represent the layout of all these objects as whole. The Map object uses the Bokeh library to create a map of the United States. There are a few inaccuracies in the file that we downloaded from the internet, rendering a map that has some peculiarities. The Question class served as our controller, providing the user an outlet to input an answer to a question on the view and then sending that data to the model to update the view accordingly. Lastly, Integration is a class which communicates between our model, controller, and our view objects and coordinates between them. 
 
 <img src="https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/ClassDiagram.png" alt ="" />
 *Above is the full UML diagram for the implementation of our data visualization*
