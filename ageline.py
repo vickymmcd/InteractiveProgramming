@@ -3,13 +3,20 @@ Authors: Vicky McDermott and Emily Lepert
 
 This function represents the visual Age Line object.
 '''
-from bokeh.plotting import figure, output_file, show
+from bokeh.plotting import figure
 from bokeh.models import CategoricalColorMapper, ColumnDataSource, HoverTool
 import bokeh.palettes
 
 
 class AgeLine:
     def __init__(self):
+        '''
+        This initializes the AgeLine class and assigns the x
+        coordinates, y coordinates, and color mapper. It also
+        sets up the initial probability, hover tool, and sets
+        up the figures and columndatasource for the ageline.
+
+        '''
         self.x_coords = [[18, 18, 30, 30], [30, 30, 45, 45], [45, 45, 60, 60],
                          [60, 60, 75, 75]]
         self.y_coords = [[0, 5, 5, 0], [0, 5, 5, 0], [0, 5, 5, 0],
@@ -55,11 +62,27 @@ class AgeLine:
                                                       self.mapper})
 
     def get_fig(self, probs):
+        '''
+        Returns the ageline figure which can be used
+        and shown in the layout
+
+        probs: list containing 4 probabilities that
+        a person is from each of the 4 age ranges
+        '''
         return self.figure1
 
     def update_ageline(self, probs=[]):
+        '''
+        Updates the colors and values of the probabilities
+        in the ageline by changing the value of probs in
+        the columnddatasource
+
+        probs: list containing 4 probabilities that
+        a person is from each of the 4 age ranges
+        '''
         self.source1.data['probs'] = probs
         print('ageline updated')
+
 
 if __name__ == '__main__':
     age_line = AgeLine()

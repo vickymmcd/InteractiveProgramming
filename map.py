@@ -3,7 +3,7 @@ Authors: Vicky McDermott and Emily Lepert
 
 This function represents the visual Map object.
 '''
-from bokeh.plotting import figure, output_file, show
+from bokeh.plotting import figure
 from bokeh.models import CategoricalColorMapper, ColumnDataSource, HoverTool
 import bokeh.palettes
 import shapefile
@@ -11,8 +11,16 @@ import shapefile
 
 class Map:
     def __init__(self):
+        '''
+        This initializes the Map class and assigns the x
+        coordinates, y coordinates, and color mapper. It also
+        sets up the initial probability, hover tool, and sets
+        up the figures and columndatasource for the map.
+
+        '''
         self.x_coords = []
         self.y_coords = []
+        # list of regions associated with each state
         self.regions = [8, 4, 0, 8, 6, 2, 1, 7, 1, 9, 3, 8, 9, 2, 7, 1, 8, 4,
                         1, 5, 8, 8, 0, 7, 5, 4, 4, 7, 4, 9, 5, 7, 0, 0, 5, 7,
                         7, 5, 5, 0, 0, 0, 0, 6, 6, 3, 4, 3, 9, 2, 4, 1, 2, 7,
@@ -40,6 +48,7 @@ class Map:
                                                       100],
                                              palette=bokeh.palettes.
                                              viridis(101))
+        # get the x and y coordinates of the states from the shapefile
         self.sf = shapefile.Reader("StateBorders/cb_2015_us_state_5m.shp")
         self.shapes = self.sf.shapes()
         for i, shape in enumerate(self.shapes):
@@ -60,6 +69,8 @@ class Map:
                              'South Atlantic', 'West North Central',
                              'West South Central']
         self.initial_probs = [0, 11, 11, 11, 11, 11, 11, 11, 11, 11]
+        # goes through the probability and puts the probability for the
+        # corresponding region with each state
         state_probs = []
         state_regions = []
         for region in self.regions:
@@ -76,14 +87,29 @@ class Map:
                                                      'transform': self.mapper})
 
     def get_fig(self, probs):
+        '''
+        Returns the map figure which can be used
+        and shown in the layout
+
+        probs: list containing 10 probabilities that
+        a person is from each of the 10 regions
+        '''
         return self.figure
 
     def update_map(self, probs=[]):
-        # each state is part of certain region
-        # go through the region of each state and assigns
-        # the probability for that region to that state
-        # probs list should be in region order so 1st element
-        # has probability for first region, etc.
+        '''
+        Updates the colors and values of the probabilities
+        in the map by changing the value of probability in
+        the columnddatasource
+        Each state is part of certain region,
+        go through the region of each state and assign
+        the probability for that region to that state.
+        Probs list should be in region order so 1st element
+        has probability for first region, etc.
+
+        probs: list containing 10 probabilities that
+        a person is from each of the 10 regions
+        '''
         state_probs = []
         state_regions = []
         for region in self.regions:
@@ -95,4 +121,3 @@ class Map:
 
 if __name__ == '__main__':
     map = Map()
-

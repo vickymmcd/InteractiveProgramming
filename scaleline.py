@@ -3,13 +3,20 @@ Authors: Vicky McDermott and Emily Lepert
 
 This function represents the visual Scale Line object.
 '''
-from bokeh.plotting import figure, output_file, show
+from bokeh.plotting import figure
 from bokeh.models import CategoricalColorMapper, ColumnDataSource
 import bokeh.palettes
 
 
 class ScaleLine:
     def __init__(self):
+        '''
+        This initializes the ScaleLine class and assigns the x
+        coordinates, y coordinates, and color mapper. It also
+        sets up the initial probability, hover tool, and sets
+        up the figures and columndatasource for the scaleline.
+
+        '''
         self.x_coords = [[0, 0, 10, 10], [10, 10, 20, 20], [20, 20, 30, 30],
                          [30, 30, 40, 40], [40, 40, 50, 50], [50, 50, 60, 60],
                          [60, 60, 70, 70], [70, 70, 80, 80], [80, 80, 90, 90],
@@ -45,11 +52,21 @@ class ScaleLine:
                              plot_width=700, x_axis_label='Probability')
 
     def get_fig(self):
+        '''
+        Updates and returns the color scale line
+        for use in the layout
+
+        '''
         self.update_scaleline()
         return self.figure
 
     def update_scaleline(self, probs=[10, 20, 30, 40, 50, 60, 70, 80, 90,
                                       100]):
+        '''
+        Uses bokeh glyphs to draw the patches for the
+        color scale line
+
+        '''
         self.source = ColumnDataSource(data={'x_coords': self.x_coords,
                                              'y_coords': self.y_coords,
                                              'probs': probs})

@@ -22,7 +22,7 @@ class Layout:
         Gathers the Map, AgeLine, ScaleLine, Question class layouts
         and combines them onto one document
 
-        Attributes: map, ageline, scaleline, question, priors, 
+        Attributes: map, ageline, scaleline, question, priors,
             region_probs, region_names, age_names, age_probs, layout
         '''
         self.map = Map()
@@ -67,6 +67,17 @@ class Layout:
         self.layout.children[1] = new_fig
 
     def update_visuals(self, ques_num, response, data_type):
+        '''
+        This function uses the interpret class to update
+        the probabilities of the person who answered the question
+        with a given response being from a certain location and age
+        group. It updates self.region_probs and self.age_probs
+        and updates the map and ageline appropriately.
+
+        ques_num: number of question being answered
+        response: the response from the user
+        data_type: specifies whether it is a comma or earthquake question
+        '''
         interpret = Interpret(self.priors, ques_num, response, data_type)
         self.priors = interpret.bayesian_update()
         region1_probs = 0
@@ -83,6 +94,7 @@ class Layout:
         age3_probs = 0
         age4_probs = 0
         for i in range(len(self.priors)):
+            # add all the probabilities that you are from a given location
             if interpret.get_location(i) == self.region_names[1]:
                 region1_probs += int(self.priors[i] * 100)
             elif interpret.get_location(i) == self.region_names[2]:
@@ -101,6 +113,7 @@ class Layout:
                 region8_probs += int(self.priors[i] * 100)
             elif interpret.get_location(i) == self.region_names[9]:
                 region9_probs += int(self.priors[i] * 100)
+            # add all the probabilities that you are from a given age group
             if interpret.get_age(i) == self.age_names[0]:
                 age1_probs += int(self.priors[i] * 100)
             elif interpret.get_age(i) == self.age_names[1]:
@@ -126,6 +139,5 @@ class Layout:
         biggest_loc_prob = max(self.region_probs)
         loc_index = self.region_probs.index(biggest_loc_prob)
         biggest_loc = self.region_names[loc_index]
-        biggest_prob = str(biggest_age) + ' years old and from the ' + str(biggest_loc) 
+        biggest_prob = str(biggest_age) + ' years old and from the ' + str(biggest_loc)
         return(biggest_prob)
-
