@@ -36,7 +36,7 @@ class AgeLine:
                                                       95, 96, 97, 98, 99,
                                                       100],
                                              palette=bokeh.palettes.
-                                             magma(101))
+                                             viridis(101))
         self.initialprobs = [25, 25, 25, 25]
         self.hover = HoverTool(tooltips=[('Age', '@age'),
                                          ('Probability', '@probs')])
