@@ -17,12 +17,14 @@ We had several people interact with our project and answer the questions. When t
 *This is a zoom in of the age line visualization with the color scale line and hover tool.*
 
 <img src="https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/ExampleQuestion.png" alt ="" />
-*This is a zoom of an example question.*
+
+*This is a zoom in of an example question.*
 
 <img src="https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/FinalVisual.png" alt ="" />
 *This is an example of the final visuals after all the questions have been run through.*
 
 <img src="https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/FinalStatement.png" alt ="" />
+
 *This is an example of a final statement (note: this statement does not correlate to the result of the above visual).*
 
 ## Implementation
