@@ -10,10 +10,13 @@ We have accessed two datasets and the answers to various questions from those da
 We had several people interact with and answer the questions in our data visualization. By the end of the questions, it often gives a clear picture of where our model thinks the person is from and how old they are just by looking at where the concentrated lighter colors representing a higher probability lie. It is not always accurate in its predicitions but we are assuming this is due to the limitations of the data sets we chose and the ways in which they might be related to location and age as opposed to any inherent problem in our algorithms or visualization. It is also really interesting to see that as people answer questions about different things they affect the probabilities in different ways. For example, it seems that the comma questions contribute more to the probabilities people are from various age groups, while the earthquake questions contribute more to the probabilities of people being from certain locations.
 
 ![FullScreen] (https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/datavispic.png)
+*Above is a screenshot of our full interactive data visualization*
 
 ![Map] (https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/Screen%20Shot%202017-03-08%20at%208.13.55%20PM.png)
+*This is a zoom in of the map visualization with the hover tool.*
 
 ![AgeLine] (https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/Screen%20Shot%202017-03-08%20at%208.14.06%20PM.png)
+*This is a zoom in of the age line visualization with the color scale line and hover tool.*
 
 
 ## Implementation [~2-3 paragraphs + UML diagram]
@@ -25,6 +28,7 @@ One decision we made where we had to decide between multiple alternatives was wh
 ## Reflection [~2 paragraphs]
 From a process point of view, what went well? What could you improve? Other possible reflection topics: Was your project appropriately scoped? Did you have a good plan for unit testing? How will you use what you learned going forward? What do you wish you knew before you started that would have helped you succeed?
 The project was well scoped in that we were able to accomplish most of what we wanted in the time given. It was ambitious but both of us were excited about it and willing to invest a good amount of time into the success of the project. We learned a lot about using different libararies and carefully implementing new features. We also found that adding print statements and adding features slowly made debugging much less difficult. In general, the project seemed to flow very nicely. The only thing we might consider changing was the way in which we tested things. We might consider adding more unit tests so that we have less issues with debugging and small errors later in the process. It would also probably have been better to draw our UML diagram sooner and add more comments in our code. I would say the one issue with choosing such an ambitious project was that we found ourselves just trying to get things done and make them work in whatever way possible as opposed to making nicer, cleaner code.
+
 Also discuss your team process in your reflection. How did you plan to divide the work (e.g. split by class, always pair program together, etc.) and how did it actually happen? Were there any issues that arose while working together, and how did you address them? What would you do differently next time?
 We split up the work by writing different classes. We split the work fairly evenly between us and helped each other with debugging and merging. We also did some pair programming on some of the more complicated Bokeh and integration pieces of the project. We were very excited whenever we got a feature of our program to work and generally had a very good experience. 
 
