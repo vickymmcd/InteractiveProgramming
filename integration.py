@@ -73,7 +73,7 @@ class Integration():
 			self.layout.change_layout(self.index, self.interpret, Data(self.data_type), self.data_type)
 			self.counter += 1
 		# if the next question is supposed to be an earthquake question
-		elif self.data_type == 'earthquake' and self.index < 8:
+		elif self.data_type == 'earthquake' and self.index < 7:
 			self.layout.change_layout(self.index, self.interpret, Data(self.data_type), self.data_type)
 			self.counter += 1
 
@@ -91,10 +91,10 @@ class Integration():
 			self.layout.get_layout()
 	
 		#anytime after the first cycle
-		if self.counter < 17:
+		if self.counter < 16:
 			Question.answer.on_click(self.update_layout)
 		# after the last question
-		else:
+		elif self.counter == 16:
 			# Writes out the highest probability location and age
 			final_blurb = Div(text='You are most likely to be '+ self.layout.biggest_prob() + ' region.')
 			new_layout = widgetbox(final_blurb)
