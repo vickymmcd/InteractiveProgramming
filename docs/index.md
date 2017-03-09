@@ -12,17 +12,23 @@ We had several people interact with and answer the questions in our data visuali
 <img src="https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/datavispic.png" alt="" />
 *Above is a screenshot of our full interactive data visualization*
 
+
 <img src="https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/Screen%20Shot%202017-03-08%20at%208.13.55%20PM.png" alt ="" />
 *This is a zoom in of the map visualization with the hover tool.*
 
+
 <img src="https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/Screen%20Shot%202017-03-08%20at%208.14.06%20PM.png" alt ="" />
 *This is a zoom in of the age line visualization with the color scale line and hover tool.*
+
 
 
 ## Implementation [~2-3 paragraphs + UML diagram]
 We implemented several classes all representing different pieces of our program. We had a data class which represented the data files as we pulled them in from the internet. Inside the data class we had methods which could organize the data in ways such that we could easily access and use various aspects of the data later in our project. We manipulated the data in our interpret class which represented the model of our model view controller. We had four main view classes. One represented the map object, another the age line object, another a scale line representing the color scale, and lastly one to represent the layout of all these objects as whole. Integration is a class which communicates between our model and our view objects and pulls everything together. Lastly the question class served as our controller, providing the user an outlet to input an answer to a question on the view and then sending that data to the model to update the view accordingly.
 
 One decision we made where we had to decide between multiple alternatives was when we decided on what library we wanted to use. We were torn between trying to make PyGame work with some combination of other graphing and map interfaces and choosing a different library entirely, such as Bokeh. We ended up making the decision to move to Bokeh because it was going to be very difficult to do what we wanted to do with PyGame and we found that Bokeh had a great variety of resources and tips on how to do the types of data visualizations we were trying to do. It was a tough decision to make, especially after devoting several hours to getting a map and running with geoplotlib, but it was definitely good in the long run that we made the decision we did as Bokeh ended up being the perfect library for our project. 
+
+<img src="https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/ClassDiagram.png" alt ="" />
+*Above is the full UML diagram for the implementation of our data visualization*
 
 
 ## Reflection [~2 paragraphs]
