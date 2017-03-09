@@ -9,6 +9,8 @@ We have accessed two datasets and the answers to various questions from those da
 
 We had several people interact with and answer the questions in our data visualization. By the end of the questions, it often gives a clear picture of where our model thinks the person is from and how old they are just by looking at where the concentrated lighter colors representing a higher probability lie. It is not always accurate in its predicitions but we are assuming this is due to the limitations of the data sets we chose and the ways in which they might be related to location and age as opposed to any inherent problem in our algorithms or visualization. It is also really interesting to see that as people answer questions about different things they affect the probabilities in different ways. For example, it seems that the comma questions contribute more to the probabilities people are from various age groups, while the earthquake questions contribute more to the probabilities of people being from certain locations.
 
+<img src="https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/datavispic.png" alt="" />
+
 ![FullScreen] (https://raw.githubusercontent.com/vickymmcd/InteractiveProgramming/master/images/datavispic.png)
 *Above is a screenshot of our full interactive data visualization*
 
