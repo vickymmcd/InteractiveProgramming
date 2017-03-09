@@ -30,7 +30,7 @@ class Layout:
         self.scaleline = ScaleLine()
         self.question = Question(question_index, interpret, data,
                                  data_type)
-        self.priors = [3] * 36
+        self.priors = [.0278] * 36
         self.region_probs = [0, 11, 11, 11, 11, 11, 11, 11, 11, 11]
         self.region_names = ['Unknown', 'East North Central',
                              'East South Central', 'Middle Atlantic',
